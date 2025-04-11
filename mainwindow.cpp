@@ -36,8 +36,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     QLabel *loginIcon = new QLabel(ui->LoginButton);
 
-    //ui->LoginButton->setContentsMargins(0,0,0,0);
-
     loginLayout->addWidget(loginIcon, 0, Qt::AlignLeft);
 
     ui->LoginButton->setLayout(loginLayout);
@@ -248,7 +246,7 @@ void MainWindow::setData(const UserData &user)
 
     //QString UserName = currentUser.name + " " +currentUser.surname;
     QString UserName = "Holoviznyi Maksym";
-    QFontMetrics fm(ui->LoginButton->font()); // Берёт шрифт кнопки
+    QFontMetrics fm(ui->LoginButton->font());
     int textWidth = fm.horizontalAdvance(UserName);
 
     loginButtonWidth = textWidth + 40;
@@ -318,7 +316,6 @@ void MainWindow::setData(const UserData &user)
         );
 
     //ui->stackedWidget->setCurrentWidget(ui->page_2);
-    //connect(ui->LoginButton, &QPushButton::clicked(), this, )
 }
 
 void MainWindow::applyStyleSheet()
