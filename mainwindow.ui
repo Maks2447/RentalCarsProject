@@ -1093,9 +1093,11 @@ QCheckBox::indicator:checked {
       </widget>
       <widget class="QWidget" name="ProfilePage">
        <property name="styleSheet">
-        <string notr="true"/>
+        <string notr="true">#ProfilePage {
+	color: rgb(255, 255, 255);
+}</string>
        </property>
-       <layout class="QGridLayout" name="gridLayout" rowstretch="1,0,10,3">
+       <layout class="QGridLayout" name="gridLayout" rowstretch="2,9,2">
         <property name="leftMargin">
          <number>0</number>
         </property>
@@ -1111,46 +1113,11 @@ QCheckBox::indicator:checked {
         <property name="verticalSpacing">
          <number>0</number>
         </property>
-        <item row="0" column="0">
-         <widget class="QWidget" name="widget_2" native="true">
+        <item row="1" column="0">
+         <widget class="QWidget" name="widget_3" native="true">
           <property name="styleSheet">
            <string notr="true">background-color: #121212;</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="3,0">
-           <property name="topMargin">
-            <number>11</number>
-           </property>
-           <property name="bottomMargin">
-            <number>11</number>
-           </property>
-           <item>
-            <widget class="QLabel" name="label_2">
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="text">
-              <string>&lt;p style=&quot;margin: 0; line-height: 0.8;&quot;&gt;
-      &lt;span style=&quot;font-family: 'Californian FB', 'sans-serif'; font-size: 47px; font-weight: 700; color: #ff8000;&quot;&gt;MaxDrive&lt;/span&gt;&lt;br&gt;
-      &lt;span style=&quot;font-family: 'Californian FB', 'sans-serif'; font-size: 29px; color: #808080;&quot;&gt;ride in comfort&lt;/span&gt;
-    &lt;/p&gt;</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignmentFlag::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_3">
-             <property name="text">
-              <string>123</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QWidget" name="widget_3" native="true">
           <layout class="QHBoxLayout" name="horizontalLayout_5">
            <property name="leftMargin">
             <number>0</number>
@@ -1168,30 +1135,52 @@ QCheckBox::indicator:checked {
             <widget class="QTabWidget" name="tabWidget">
              <property name="styleSheet">
               <string notr="true">QTabBar {
-    background: transparent;
+    background-color: #212121;
+    font-size: 18px; 
     border: none;
 }
 
 QTabBar::tab {
-    background: transparent;
+    background-color: #121212;
+    color: white;
+    padding: 10px 10px;
     border: none;
-    margin: 0;
-    padding: 0;
-width: 0px;
-    height: 0px;
+}
+
+QTabBar::tab:selected {
+    background-color: #121212; /* Цвет фона для активной вкладки */
+    color: white;              /* Цвет текста для активной вкладки */
+    border-bottom: 2px solid orange; /* Граница снизу активной вкладки */
 }
 
 QTabWidget::pane {
-    border: none;
+	background-color: #212121;
+    border-top: 1px solid gray; 
+}
+
+QTabWidget::pane *{
+	background-color: #121212;
+}
+
+QTabBar::tab:first {
+	margin-left: 28px;    
+	margin-right: 15px;
+}
+
+QTabBar::tab:last {
+	margin-left: 15px; 
 }
 </string>
              </property>
              <property name="currentIndex">
               <number>0</number>
              </property>
-             <widget class="QWidget" name="tab">
+             <widget class="QWidget" name="BookingPage">
+              <property name="styleSheet">
+               <string notr="true">background-color: #212121;</string>
+              </property>
               <attribute name="title">
-               <string>Tab 1</string>
+               <string>Bookings</string>
               </attribute>
               <layout class="QVBoxLayout" name="verticalLayout_11" stretch="1,9">
                <item>
@@ -1205,7 +1194,7 @@ QTabWidget::pane {
                   <string>Bookings</string>
                  </property>
                  <property name="alignment">
-                  <set>Qt::AlignmentFlag::AlignCenter</set>
+                  <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                  </property>
                 </widget>
                </item>
@@ -1214,9 +1203,18 @@ QTabWidget::pane {
                </item>
               </layout>
              </widget>
-             <widget class="QWidget" name="tab_2">
+             <widget class="QWidget" name="accountPage">
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: #212121;</string>
+              </property>
               <attribute name="title">
-               <string>Tab 2</string>
+               <string>Account</string>
               </attribute>
               <widget class="QPushButton" name="pushButton_2">
                <property name="geometry">
@@ -1232,129 +1230,74 @@ QTabWidget::pane {
                </property>
               </widget>
              </widget>
+             <widget class="QWidget" name="tab">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>11111111</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: #212121;</string>
+              </property>
+              <attribute name="title">
+               <string>Help</string>
+              </attribute>
+             </widget>
             </widget>
            </item>
           </layout>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QWidget" name="widget_4" native="true">
-          <property name="styleSheet">
-           <string notr="true">#widget_4 {
-	background-color: #121212;
-	border-bottom: 1px solid gray;
-}
-
-#widget_4 *{
-	font-size: 18px;
-	border: none;
-	background-color: #121212;
-}
-
-</string>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,0,0,0,0,1">
-           <property name="spacing">
-            <number>20</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>15</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>20</number>
-           </property>
-           <item>
-            <spacer name="horizontalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Orientation::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_3">
-             <property name="maximumSize">
-              <size>
-               <width>91</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Home</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_4">
-             <property name="maximumSize">
-              <size>
-               <width>91</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Bookings</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_5">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Account</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_6">
-             <property name="text">
-              <string>Logout</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_3">
-             <property name="orientation">
-              <enum>Qt::Orientation::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="3" column="0">
+        <item row="2" column="0">
          <widget class="QWidget" name="widget_5" native="true">
           <property name="styleSheet">
            <string notr="true">background-color: #121212;</string>
           </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QWidget" name="widget_2" native="true">
+          <property name="styleSheet">
+           <string notr="true">background-color: #121212;</string>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="3,0">
+           <property name="topMargin">
+            <number>11</number>
+           </property>
+           <property name="bottomMargin">
+            <number>11</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="styleSheet">
+              <string notr="true">margin-left: 10px;</string>
+             </property>
+             <property name="text">
+              <string>&lt;p style=&quot;margin: 0; line-height: 0.8;&quot;&gt;
+      &lt;span style=&quot;font-family: 'Californian FB', 'sans-serif'; font-size: 40px; font-weight: 700; color: #ff8000;&quot;&gt;MaxDrive&lt;/span&gt;&lt;br&gt;
+      &lt;span style=&quot;font-family: 'Californian FB', 'sans-serif'; font-size: 25px; color: #808080;&quot;&gt;ride in comfort&lt;/span&gt;
+    &lt;/p&gt;</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>123</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>

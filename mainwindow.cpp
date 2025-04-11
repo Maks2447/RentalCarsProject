@@ -58,13 +58,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     applyStyleSheet();
 
-    QFrame *line = new QFrame(this);
-    line->setStyleSheet("background-color: #ffd900;");
-    line->setFixedSize(35, 3);
-
-
-    ui->verticalLayout_11->insertWidget(1, line, 0, Qt::AlignCenter);
-
 }
 
 MainWindow::~MainWindow()
