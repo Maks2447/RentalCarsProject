@@ -36,6 +36,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     QLabel *loginIcon = new QLabel(ui->LoginButton);
 
+    //ui->LoginButton->setContentsMargins(0,0,0,0);
+
     loginLayout->addWidget(loginIcon, 0, Qt::AlignLeft);
 
     ui->LoginButton->setLayout(loginLayout);
@@ -55,6 +57,14 @@ MainWindow::MainWindow(QWidget *parent)
     setData(user);
 
     applyStyleSheet();
+
+    QFrame *line = new QFrame(this);
+    line->setFixedHeight(1);
+    line->setStyleSheet("background-color: #ffd900;");
+    ui->gridLayout_5->addItem(new QSpacerItem(0, 10, QSizePolicy::Minimum, QSizePolicy::Fixed), 1, 0, 1, 3);
+    ui->gridLayout_5->addWidget(line, 1, 0, 1, 3);
+
+
 
 }
 
@@ -246,7 +256,7 @@ void MainWindow::setData(const UserData &user)
 
     //QString UserName = currentUser.name + " " +currentUser.surname;
     QString UserName = "Holoviznyi Maksym";
-    QFontMetrics fm(ui->LoginButton->font());
+    QFontMetrics fm(ui->LoginButton->font()); // Берёт шрифт кнопки
     int textWidth = fm.horizontalAdvance(UserName);
 
     loginButtonWidth = textWidth + 40;
@@ -316,6 +326,7 @@ void MainWindow::setData(const UserData &user)
         );
 
     //ui->stackedWidget->setCurrentWidget(ui->page_2);
+    //connect(ui->LoginButton, &QPushButton::clicked(), this, )
 }
 
 void MainWindow::applyStyleSheet()

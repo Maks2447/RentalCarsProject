@@ -29,6 +29,8 @@ RegistrDialog::RegistrDialog(QWidget *parent)
     line->setStyleSheet("background-color: #ffd900;");
     line->setFixedSize(35, 3);
     ui->verticalLayout_3->insertWidget(2, line, 0, Qt::AlignCenter);
+    line->setContentsMargins(0, 5, 0, 0); // сверху 10px отступ
+
 
     validators();
     applyStyleSheetDialog();
