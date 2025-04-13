@@ -14,6 +14,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , isLogin(false)
 {    
     ui->setupUi(this);
 
@@ -52,19 +53,21 @@ MainWindow::MainWindow(QWidget *parent)
     container->setObjectName("container");
     ui->setFilters_pushButton->setObjectName("setFilters");
 
+    //ui->OrderHome->setObjectName("OrderPage");
+
     loadCars("");
 
-    setData(user);
+    //setData(user);
 
     applyStyleSheet();
 
     QFrame *line = new QFrame(this);
     line->setFixedHeight(1);
-    line->setStyleSheet("background-color: #ffd900;");
-    ui->gridLayout_5->addItem(new QSpacerItem(0, 10, QSizePolicy::Minimum, QSizePolicy::Fixed), 1, 0, 1, 3);
-    ui->gridLayout_5->addWidget(line, 1, 0, 1, 3);
+    line->setStyleSheet("background-color: gray;");
 
-
+    QVBoxLayout *layoutLine = new QVBoxLayout(this);
+    ui->widget_8->setLayout(layoutLine);
+    layoutLine->addWidget(line);
 
 }
 
@@ -168,6 +171,8 @@ void MainWindow::loadCars(QString queryStr)
 
         QPushButton *orderButton = new QPushButton("Order", childWdg);
 
+        //connect(orderButton, &QPushButton::clicked, this, &MainWindow::orderCarShow);
+
         QLabel *space = new QLabel("", childWdg);
         //>>
 
@@ -251,11 +256,12 @@ void MainWindow::loadCars(QString queryStr)
 void MainWindow::setData(const UserData &user)
 {
     currentUser = user;
+    isLogin = true;
 
     double loginButtonWidth;
 
-    //QString UserName = currentUser.name + " " +currentUser.surname;
-    QString UserName = "Holoviznyi Maksym";
+    QString UserName = currentUser.name + " " +currentUser.surname;
+    //QString UserName = "Holoviznyi Maksym";
     QFontMetrics fm(ui->LoginButton->font()); // Берёт шрифт кнопки
     int textWidth = fm.horizontalAdvance(UserName);
 
@@ -335,6 +341,16 @@ void MainWindow::applyStyleSheet()
     file.open(QFile::ReadOnly);
     qApp->setStyleSheet(file.readAll());
 }
+
+// void MainWindow::orderCarShow()
+// {
+//     ui->stackedWidget->setCurrentWidget(ui->OrderHome);
+//     qDebug() << currentUser.name;
+//     if(isLogin) {
+//         ui->lineEdit->setText(currentUser.name);
+//         ui->lineEdit_2->setText(currentUser.surname);
+//     }
+// }
 
 void MainWindow::on_LoginButton_clicked()
 {

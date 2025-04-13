@@ -91,7 +91,7 @@
          </font>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="login_page">
          <widget class="QWidget" name="layoutWidget">
@@ -536,7 +536,7 @@
            <string/>
           </property>
           <property name="pixmap">
-           <pixmap>C:/Users/golov/Downloads/exclamationmark_white.png</pixmap>
+           <pixmap>../../../Downloads/exclamationmark_white.png</pixmap>
           </property>
           <property name="scaledContents">
            <bool>true</bool>

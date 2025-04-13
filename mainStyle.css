@@ -131,3 +131,8 @@
     background-color: #de7616;
     color: #bababa;
 }
+
+
+#OrderPage QLineEdit {
+    font-size: 20px;
+}

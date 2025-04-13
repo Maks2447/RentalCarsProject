@@ -39,6 +39,8 @@ private slots:
 
     void applyStyleSheet();
 
+    //void orderCarShow();
+
 private:
     Ui::MainWindow *ui;
 
@@ -48,7 +50,9 @@ private:
     QWidget *container;
     QVBoxLayout *layout;
 
-    UserData user;
+    //UserData user;
     QMenu *menu;
+
+    bool isLogin;
 };
 #endif // MAINWINDOW_H
