@@ -37,8 +37,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     QLabel *loginIcon = new QLabel(ui->LoginButton);
 
-    //ui->LoginButton->setContentsMargins(0,0,0,0);
-
     loginLayout->addWidget(loginIcon, 0, Qt::AlignLeft);
 
     ui->LoginButton->setLayout(loginLayout);
@@ -53,7 +51,11 @@ MainWindow::MainWindow(QWidget *parent)
     container->setObjectName("container");
     ui->setFilters_pushButton->setObjectName("setFilters");
 
-    //ui->OrderHome->setObjectName("OrderPage");
+    ui->OrderHome->setObjectName("OrderPage");
+
+    connect(ui->backToHomePage, &QPushButton::clicked, this, [=]() {
+        ui->stackedWidget->setCurrentIndex(0);
+    });
 
     loadCars("");
 
@@ -65,10 +67,9 @@ MainWindow::MainWindow(QWidget *parent)
     line->setFixedHeight(1);
     line->setStyleSheet("background-color: gray;");
 
-    QVBoxLayout *layoutLine = new QVBoxLayout(this);
+    QVBoxLayout *layoutLine = new QVBoxLayout();
     ui->widget_8->setLayout(layoutLine);
-    layoutLine->addWidget(line);
-
+    layoutLine->addWidget(line);   
 }
 
 MainWindow::~MainWindow()
@@ -171,7 +172,9 @@ void MainWindow::loadCars(QString queryStr)
 
         QPushButton *orderButton = new QPushButton("Order", childWdg);
 
-        //connect(orderButton, &QPushButton::clicked, this, &MainWindow::orderCarShow);
+        connect(orderButton, &QPushButton::clicked, this, [=]() {
+            orderCarShow(car);
+        });
 
         QLabel *space = new QLabel("", childWdg);
         //>>
@@ -342,15 +345,17 @@ void MainWindow::applyStyleSheet()
     qApp->setStyleSheet(file.readAll());
 }
 
-// void MainWindow::orderCarShow()
-// {
-//     ui->stackedWidget->setCurrentWidget(ui->OrderHome);
-//     qDebug() << currentUser.name;
-//     if(isLogin) {
-//         ui->lineEdit->setText(currentUser.name);
-//         ui->lineEdit_2->setText(currentUser.surname);
-//     }
-// }
+void MainWindow::orderCarShow(const QVector<QString>& carData)
+{
+    ui->stackedWidget->setCurrentWidget(ui->OrderHome);
+    qDebug() << currentUser.name;
+    if(isLogin) {
+        ui->lineEdit->setText(currentUser.name);
+        ui->lineEdit_2->setText(currentUser.surname);
+    }
+    ui->label_11->setText(carData[0]);
+    ui->label_12->setText(carData[5]);
+}
 
 void MainWindow::on_LoginButton_clicked()
 {

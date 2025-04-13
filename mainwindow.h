@@ -39,7 +39,7 @@ private slots:
 
     void applyStyleSheet();
 
-    //void orderCarShow();
+    void orderCarShow(const QVector<QString>& carData);
 
 private:
     Ui::MainWindow *ui;
