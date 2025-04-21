@@ -39,7 +39,9 @@ private slots:
 
     void applyStyleSheet();
 
-    void orderCarShow(const QVector<QString>& carData);
+    void orderCarShow(const QVector<QString>& carData, const QPixmap &photoPixmap);
+
+    QPixmap roundedPixmap(const QPixmap &src, int radius);
 
 private:
     Ui::MainWindow *ui;

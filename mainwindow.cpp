@@ -10,6 +10,8 @@
 #include <QMenu>
 #include <QAction>
 #include <QMessageBox>
+#include <QPainter>
+#include <QPainterPath>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -51,7 +53,7 @@ MainWindow::MainWindow(QWidget *parent)
     container->setObjectName("container");
     ui->setFilters_pushButton->setObjectName("setFilters");
 
-    ui->OrderHome->setObjectName("OrderPage");
+    ui->OrderPage->setObjectName("OrderPage");
 
     connect(ui->backToHomePage, &QPushButton::clicked, this, [=]() {
         ui->stackedWidget->setCurrentIndex(0);
@@ -65,11 +67,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     QFrame *line = new QFrame(this);
     line->setFixedHeight(1);
-    line->setStyleSheet("background-color: gray;");
+    line->setStyleSheet("background-color: #c7c7c7;");
 
     QVBoxLayout *layoutLine = new QVBoxLayout();
-    ui->widget_8->setLayout(layoutLine);
-    layoutLine->addWidget(line);   
+    ui->Order_horizontalLine_widget->setLayout(layoutLine);
+    layoutLine->addWidget(line);
+
+    ui->Order_iconLittleCar1->setPixmap(QPixmap("C:/Users/golov/Downloads/icons8-автомобиль-40"));
+    ui->Order_iconLittleCar1->setScaledContents(true);
+    ui->Order_icon_line->setPixmap(QPixmap("C:/Users/golov/Downloads/icons8-вертикальная-линия-50"));
+    ui->Order_icon_line->setScaledContents(true);
+    ui->Order_iconLittleCar2->setPixmap(QPixmap("C:/Users/golov/Downloads/icons8-автомобиль-40"));
+    ui->Order_iconLittleCar2->setScaledContents(true);
 }
 
 MainWindow::~MainWindow()
@@ -173,7 +182,7 @@ void MainWindow::loadCars(QString queryStr)
         QPushButton *orderButton = new QPushButton("Order", childWdg);
 
         connect(orderButton, &QPushButton::clicked, this, [=]() {
-            orderCarShow(car);
+            orderCarShow(car, photoPixmap);
         });
 
         QLabel *space = new QLabel("", childWdg);
@@ -345,17 +354,46 @@ void MainWindow::applyStyleSheet()
     qApp->setStyleSheet(file.readAll());
 }
 
-void MainWindow::orderCarShow(const QVector<QString>& carData)
+void MainWindow::orderCarShow(const QVector<QString>& carData, const QPixmap &photoPixmap)
 {
-    ui->stackedWidget->setCurrentWidget(ui->OrderHome);
+    ui->stackedWidget->setCurrentWidget(ui->OrderPage);
     qDebug() << currentUser.name;
     if(isLogin) {
-        ui->lineEdit->setText(currentUser.name);
-        ui->lineEdit_2->setText(currentUser.surname);
+        ui->Order_name_label->setText(currentUser.name);
+        ui->Order_lastName_label->setText(currentUser.surname);
     }
-    ui->label_11->setText(carData[0]);
-    ui->label_12->setText(carData[5]);
+
+    QPixmap scaled = photoPixmap.scaled(ui->Order_photo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+    // 2. Потом округляем углы
+    QPixmap rounded = roundedPixmap(scaled, 10);
+
+    // 3. Устанавливаем изображение с округленными углами
+    ui->Order_photo->setPixmap(rounded);
+    ui->Order_photo->setScaledContents(true);
+
+    ui->Order_carModel->setText(carData[0]);
+    ui->Order_totalPrice->setText("Total: $" + carData[5]);
+
 }
+
+QPixmap MainWindow::roundedPixmap(const QPixmap &src, int radius)
+{
+    QPixmap dest(src.size());
+    dest.fill(Qt::transparent);
+
+    QPainter painter(&dest);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform);
+
+    QPainterPath path;
+    path.addRoundedRect(QRectF(0, 0, src.width(), src.height()), radius, radius);
+    painter.setClipPath(path);
+    painter.drawPixmap(0, 0, src);
+
+    return dest;
+}
+
 
 void MainWindow::on_LoginButton_clicked()
 {
@@ -507,5 +545,3 @@ void MainWindow::on_setFilters_pushButton_clicked()
     loadCars(getFilters());
     layout->addStretch();
 }
-
-
