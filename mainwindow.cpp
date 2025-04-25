@@ -65,13 +65,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     applyStyleSheet();
 
-    QFrame *line = new QFrame(this);
-    line->setFixedHeight(1);
-    line->setStyleSheet("background-color: #c7c7c7;");
+    // QFrame *line = new QFrame(this);
+    // line->setFixedHeight(1);
+    // line->setStyleSheet("background-color: #c7c7c7;");
 
-    QVBoxLayout *layoutLine = new QVBoxLayout();
-    ui->Order_horizontalLine_widget->setLayout(layoutLine);
-    layoutLine->addWidget(line);
+    // QVBoxLayout *layoutLine = new QVBoxLayout();
+    // ui->Order_horizontalLine_widget->setLayout(layoutLine);
+    // layoutLine->addWidget(line);
 
     ui->Order_iconLittleCar1->setPixmap(QPixmap("C:/Users/golov/Downloads/icons8-автомобиль-40"));
     ui->Order_iconLittleCar1->setScaledContents(true);
@@ -356,6 +356,8 @@ void MainWindow::applyStyleSheet()
 
 void MainWindow::orderCarShow(const QVector<QString>& carData, const QPixmap &photoPixmap)
 {
+    double price = carData[5].toInt() + 4.5;
+
     ui->stackedWidget->setCurrentWidget(ui->OrderPage);
     qDebug() << currentUser.name;
     if(isLogin) {
@@ -372,9 +374,10 @@ void MainWindow::orderCarShow(const QVector<QString>& carData, const QPixmap &ph
     ui->Order_photo->setPixmap(rounded);
     ui->Order_photo->setScaledContents(true);
 
-    ui->Order_carModel->setText(carData[0]);
-    ui->Order_totalPrice->setText("Total: $" + carData[5]);
-
+    ui->Order_carModel->setText(QString::number(price));
+    ui->Order_price_label->setText("$" + QString::number(price));
+    ui->Order_top_totalPrice_label->setText("<span style='font-size: 20px;'> Total:</span>"
+                                            "<span style='font-size: 28px;'>"" $" + QString::number(price) + "</span>");
 }
 
 QPixmap MainWindow::roundedPixmap(const QPixmap &src, int radius)
