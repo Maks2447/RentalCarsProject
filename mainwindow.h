@@ -52,7 +52,7 @@ private:
     QWidget *container;
     QVBoxLayout *layout;
 
-    //UserData user;
+    UserData user;
     QMenu *menu;
 
     bool isLogin;

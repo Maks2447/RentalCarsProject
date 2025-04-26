@@ -126,7 +126,7 @@
               <number>5</number>
              </property>
              <property name="rightMargin">
-              <number>20</number>
+              <number>40</number>
              </property>
              <item>
               <spacer name="horizontalSpacer">
@@ -271,7 +271,7 @@
               </property>
               <property name="minimumSize">
                <size>
-                <width>200</width>
+                <width>0</width>
                 <height>0</height>
                </size>
               </property>
@@ -1058,8 +1058,8 @@ QCheckBox::indicator:checked {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>22</width>
-                <height>16</height>
+                <width>752</width>
+                <height>873</height>
                </rect>
               </property>
               <property name="styleSheet">
@@ -1189,9 +1189,9 @@ QCheckBox::indicator:checked {
                  <property name="geometry">
                   <rect>
                    <x>0</x>
-                   <y>-295</y>
+                   <y>0</y>
                    <width>691</width>
-                   <height>1126</height>
+                   <height>1114</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_17">
@@ -1225,7 +1225,7 @@ QCheckBox::indicator:checked {
                      <number>20</number>
                     </property>
                     <property name="verticalSpacing">
-                     <number>8</number>
+                     <number>7</number>
                     </property>
                     <item row="5" column="0" colspan="2">
                      <widget class="QLabel" name="Order_phone_label">
@@ -1366,17 +1366,18 @@ QCheckBox::indicator:checked {
                        <font>
                         <pointsize>18</pointsize>
                         <italic>false</italic>
-                        <bold>false</bold>
+                        <fontweight>DemiBold</fontweight>
                        </font>
                       </property>
                       <property name="styleSheet">
-                       <string notr="true">font: 18pt;</string>
+                       <string notr="true">font: 18pt;
+font-weight: 600;</string>
                       </property>
                       <property name="text">
                        <string>Who will drive?</string>
                       </property>
                       <property name="alignment">
-                       <set>Qt::AlignmentFlag::AlignBottom</set>
+                       <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>
                       </property>
                      </widget>
                     </item>
@@ -1461,7 +1462,7 @@ QCheckBox::indicator:checked {
                      <number>20</number>
                     </property>
                     <property name="verticalSpacing">
-                     <number>8</number>
+                     <number>7</number>
                     </property>
                     <item row="0" column="0" colspan="2">
                      <widget class="QLabel" name="Order_payment_title_label">
@@ -1469,11 +1470,12 @@ QCheckBox::indicator:checked {
                        <font>
                         <pointsize>18</pointsize>
                         <italic>false</italic>
-                        <bold>false</bold>
+                        <fontweight>DemiBold</fontweight>
                        </font>
                       </property>
                       <property name="styleSheet">
-                       <string notr="true">font: 18pt;</string>
+                       <string notr="true">font: 18pt;
+font-weight: 600;</string>
                       </property>
                       <property name="text">
                        <string>How would you like to pay?</string>
@@ -1765,7 +1767,7 @@ color: gray;</string>
 font-size: 16px;
 border-radius: 13px;</string>
                 </property>
-                <layout class="QGridLayout" name="gridLayout_6" rowstretch="1,1,9,7" columnstretch="5,1,1">
+                <layout class="QGridLayout" name="gridLayout_6" rowstretch="0,0,9,7" columnstretch="5,1,1">
                  <property name="leftMargin">
                   <number>15</number>
                  </property>
@@ -1783,7 +1785,7 @@ border-radius: 13px;</string>
                    <property name="font">
                     <font>
                      <pointsize>-1</pointsize>
-                     <fontweight>DemiBold</fontweight>
+                     <bold>false</bold>
                     </font>
                    </property>
                    <property name="styleSheet">
@@ -1791,6 +1793,9 @@ border-radius: 13px;</string>
                    </property>
                    <property name="text">
                     <string>1 rental day</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>
                    </property>
                   </widget>
                  </item>
@@ -2026,6 +2031,12 @@ font-size: 15px;</string>
                  </item>
                  <item row="0" column="1">
                   <widget class="QLabel" name="Order_carModel">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
                    <property name="font">
                     <font>
                      <pointsize>-1</pointsize>
@@ -2138,14 +2149,36 @@ padding-left: 7px;
               </property>
               <item>
                <widget class="QPushButton" name="backToHomePage">
+                <property name="minimumSize">
+                 <size>
+                  <width>35</width>
+                  <height>0</height>
+                 </size>
+                </property>
                 <property name="maximumSize">
                  <size>
                   <width>35</width>
-                  <height>35</height>
+                  <height>40</height>
                  </size>
                 </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">border: none;</string>
+                </property>
                 <property name="text">
-                 <string>&lt;-</string>
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>../../../Downloads/icons8-back-52.png</normaloff>../../../Downloads/icons8-back-52.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>25</width>
+                  <height>25</height>
+                 </size>
                 </property>
                </widget>
               </item>
@@ -2268,9 +2301,9 @@ QTabBar::tab:last {
 </string>
              </property>
              <property name="currentIndex">
-              <number>0</number>
+              <number>1</number>
              </property>
-             <widget class="QWidget" name="BookingPage">
+             <widget class="QWidget" name="Profile_Booking_page">
               <property name="styleSheet">
                <string notr="true">background-color: #212121;</string>
               </property>
@@ -2298,31 +2331,11 @@ padding-bottom: 15px;</string>
                 </widget>
                </item>
                <item>
-                <widget class="QWidget" name="widget_6" native="true">
-                 <widget class="QLabel" name="label_23">
-                  <property name="geometry">
-                   <rect>
-                    <x>270</x>
-                    <y>150</y>
-                    <width>151</width>
-                    <height>81</height>
-                   </rect>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="pixmap">
-                   <pixmap>../../../Downloads/icons8-руль-24.png</pixmap>
-                  </property>
-                  <property name="scaledContents">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </widget>
+                <widget class="QWidget" name="widget_6" native="true"/>
                </item>
               </layout>
              </widget>
-             <widget class="QWidget" name="accountPage">
+             <widget class="QWidget" name="Profile_account_page">
               <property name="maximumSize">
                <size>
                 <width>16777215</width>

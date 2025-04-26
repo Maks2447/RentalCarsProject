@@ -61,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     loadCars("");
 
-    //setData(user);
+    setData(user);
 
     applyStyleSheet();
 
@@ -273,8 +273,8 @@ void MainWindow::setData(const UserData &user)
     double loginButtonWidth;
 
     QString UserName = currentUser.name + " " +currentUser.surname;
-    //QString UserName = "Holoviznyi Maksym";
-    QFontMetrics fm(ui->LoginButton->font()); // Берёт шрифт кнопки
+    UserName = "Maksym Holoviznyi";
+    QFontMetrics fm(ui->LoginButton->font());
     int textWidth = fm.horizontalAdvance(UserName);
 
     loginButtonWidth = textWidth + 40;
@@ -288,36 +288,45 @@ void MainWindow::setData(const UserData &user)
 
     QMenu *menu = new QMenu(this);
 
-    QAction *account = menu->addAction("Account");
-    account->setIcon(QIcon("C:/Users/golov/Downloads/icons8-руль-24.png"));
-
     QAction *bookings = menu->addAction("Bookings");
     bookings->setIcon(QIcon("C:/Users/golov/Downloads/exclamationmark_white.png"));
+
+    QAction *account = menu->addAction("Account");
+    account->setIcon(QIcon("C:/Users/golov/Downloads/icons8-руль-24.png"));
 
     menu->addSeparator();
     QAction *logout = menu->addAction("logout");
 
-    ui->LoginButton->setMenu(menu);
-
-
     connect(account, &QAction::triggered, this, [=](){
-        QMessageBox::information(this, "Аккаунт", "Переход в аккаунт");
+        ui->stackedWidget->setCurrentWidget(ui->ProfilePage);
+        ui->tabWidget->setCurrentWidget(ui->Profile_account_page);
     });
 
     connect(bookings, &QAction::triggered, this, [=](){
-        QMessageBox::information(this, "Заказы", "Показать заказы");
+        ui->stackedWidget->setCurrentWidget(ui->ProfilePage);
+        ui->tabWidget->setCurrentWidget(ui->Profile_Booking_page);
     });
 
     connect(logout, &QAction::triggered, this, [=](){
         QMessageBox::information(this, "Заказы", "Показать заказы");
     });
     menu->setMinimumWidth(loginButtonWidth);
+
+    connect(ui->LoginButton, &QPushButton::clicked, this, [=]() {
+        QPoint pos = ui->LoginButton->mapToGlobal(QPoint(ui->LoginButton->width(), 0));
+
+        int menuWidth = menu->sizeHint().width();
+        pos.setX(pos.x() - menuWidth);
+        pos.setY(pos.y() + 30);
+
+        menu->popup(pos);
+    });
+
     menu->setStyleSheet(
         "QMenu {"
         "   background-color: #212121;"
-        "   color: white;"
-        "   margin: 0; "
-        "   padding: 0; "
+        "   padding: 10px 0px 10px 0px; "
+        "   width: 220px;"
         "}"
 
         "QMenu::icon {"
@@ -327,13 +336,12 @@ void MainWindow::setData(const UserData &user)
         "QMenu::item {"
         "   height: 30px;"
         "   padding: 7px 10px;"
-        "   font-size: 18px;"
         "   padding-left: 15px;"
+        "   font-size: 18px;"
         "}"
 
         "QMenu::item:selected {"
         "   background-color: #1c1c1c;"
-        "   color: white;"
         "}"
 
         "QMenu::separator {"
@@ -357,12 +365,13 @@ void MainWindow::applyStyleSheet()
 void MainWindow::orderCarShow(const QVector<QString>& carData, const QPixmap &photoPixmap)
 {
     double price = carData[5].toInt() + 4.5;
+    ui->backToHomePage->setIcon(QIcon("C:/Users/golov/Downloads/icons8-back-52"));
 
     ui->stackedWidget->setCurrentWidget(ui->OrderPage);
     qDebug() << currentUser.name;
     if(isLogin) {
-        ui->Order_name_label->setText(currentUser.name);
-        ui->Order_lastName_label->setText(currentUser.surname);
+        ui->Order_name_lineEdit->setText(currentUser.name);
+        ui->Order_lastName_lineEdit->setText(currentUser.surname);
     }
 
     QPixmap scaled = photoPixmap.scaled(ui->Order_photo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -374,7 +383,7 @@ void MainWindow::orderCarShow(const QVector<QString>& carData, const QPixmap &ph
     ui->Order_photo->setPixmap(rounded);
     ui->Order_photo->setScaledContents(true);
 
-    ui->Order_carModel->setText(QString::number(price));
+    ui->Order_carModel->setText(carData[0]);
     ui->Order_price_label->setText("$" + QString::number(price));
     ui->Order_top_totalPrice_label->setText("<span style='font-size: 20px;'> Total:</span>"
                                             "<span style='font-size: 28px;'>"" $" + QString::number(price) + "</span>");
@@ -400,6 +409,9 @@ QPixmap MainWindow::roundedPixmap(const QPixmap &src, int radius)
 
 void MainWindow::on_LoginButton_clicked()
 {
+    if(isLogin) {
+        return;
+    }
     RegistrDialog RegistrForm(this);
 
     RegistrForm.setFixedSize(500, 500);
