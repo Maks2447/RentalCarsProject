@@ -12,6 +12,7 @@
 #include <QMessageBox>
 #include <QPainter>
 #include <QPainterPath>
+#include <QCalendarWidget>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -48,30 +49,52 @@ MainWindow::MainWindow(QWidget *parent)
     loginIcon->setPixmap(pixmap);
     loginIcon->setMaximumWidth(20);
 
+    calendar = new QCalendarWidget(this);
+    calendar->hide();
+    calendar->setWindowFlags(Qt::Popup);
+
     this->setObjectName("this");
     ui->LoginButton->setObjectName("LoginButton");
     container->setObjectName("container");
     ui->setFilters_pushButton->setObjectName("setFilters");
-
     ui->OrderPage->setObjectName("OrderPage");
+    calendar->setObjectName("calendar");
+
+
 
     connect(ui->backToHomePage, &QPushButton::clicked, this, [=]() {
         ui->stackedWidget->setCurrentIndex(0);
     });
 
     loadCars("");
-
     setData(user);
-
     applyStyleSheet();
 
-    // QFrame *line = new QFrame(this);
-    // line->setFixedHeight(1);
-    // line->setStyleSheet("background-color: #c7c7c7;");
 
-    // QVBoxLayout *layoutLine = new QVBoxLayout();
-    // ui->Order_horizontalLine_widget->setLayout(layoutLine);
-    // layoutLine->addWidget(line);
+    //calendar->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
+
+    // Стилизация календаря (чтобы он был красивее)
+    // calendar->setStyleSheet(
+    //     "QCalendarWidget {"
+    //     "    background-color: #212121;"
+    //     "    color: white;"
+    //     "    border: 1px solid #444;"
+    //     "    border-radius: 8px;"
+    //     "}"
+    //     "QCalendarWidget QAbstractItemView:enabled {"
+    //     "    background-color: #212121;"
+    //     "    selection-background-color: #2E7D32;"
+    //     "    selection-color: white;"
+    //     "    gridline-color: #555;"
+    //     "}"
+    //     "QCalendarWidget QToolButton {"
+    //     "    background-color: #2E7D32;"
+    //     "    color: white;"
+    //     "    font-weight: bold;"
+    //     "    border-radius: 4px;"
+    //     "    margin: 5px;"
+    //     "}"
+    //     );
 
     ui->Order_iconLittleCar1->setPixmap(QPixmap("C:/Users/golov/Downloads/icons8-автомобиль-40"));
     ui->Order_iconLittleCar1->setScaledContents(true);
@@ -406,6 +429,24 @@ QPixmap MainWindow::roundedPixmap(const QPixmap &src, int radius)
     return dest;
 }
 
+void MainWindow::onSelectionChanged()
+{
+    // QCalendarWidget *calendar = ui->dateEdit->calendarWidget();  // Получаем календарь
+
+    // // Получаем выбранную дату
+    // QDate selectedDate = calendar->selectedDate();
+
+    // // Если выбрана только одна дата
+    // if (selectedDate.isValid()) {
+    //     if (ui->dateEdit->date() == QDate()) {
+    //         // Если поле для начальной даты пустое, то это будет начальная дата
+    //         ui->dateEdit->setDate(selectedDate);
+    //     } else {
+    //         // Если начальная дата уже установлена, то считаем эту датой конечной
+    //         ui->dateEdit_2->setDate(selectedDate);
+    //     }
+    // }
+}
 
 void MainWindow::on_LoginButton_clicked()
 {
@@ -560,3 +601,21 @@ void MainWindow::on_setFilters_pushButton_clicked()
     loadCars(getFilters());
     layout->addStretch();
 }
+
+void MainWindow::on_Home_searchFrom_pushButton_clicked()
+{
+    applyStyleSheet();
+    QPoint pos = ui->Home_searchFrom_pushButton->mapToGlobal(QPoint(0, ui->Home_searchFrom_pushButton->height()));
+    calendar->move(pos);
+    calendar->show();
+    calendar->setMinimumWidth(500);
+    calendar->setMinimumHeight(140);
+    QDate today = QDate::currentDate();
+    calendar->setMinimumDate(today);
+
+    connect(calendar, &QCalendarWidget::clicked, this, [=](const QDate &date) {
+        ui->Home_searchFrom_pushButton->setText(date.toString("MMMM dd"));
+        calendar->hide();
+    });
+}
+

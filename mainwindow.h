@@ -6,6 +6,7 @@
 #include <QMainWindow>
 #include <QVBoxLayout>
 #include <registrdialog.h>
+#include <QCalendarWidget>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -43,6 +44,10 @@ private slots:
 
     QPixmap roundedPixmap(const QPixmap &src, int radius);
 
+    void onSelectionChanged();
+
+    void on_Home_searchFrom_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -54,6 +59,8 @@ private:
 
     UserData user;
     QMenu *menu;
+
+    QCalendarWidget *calendar;
 
     bool isLogin;
 };
