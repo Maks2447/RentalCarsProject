@@ -49,9 +49,12 @@ MainWindow::MainWindow(QWidget *parent)
     loginIcon->setPixmap(pixmap);
     loginIcon->setMaximumWidth(20);
 
+
+    //
     calendar = new QCalendarWidget(this);
-    calendar->hide();
     calendar->setWindowFlags(Qt::Popup);
+    calendar->installEventFilter(this);
+    //
 
     this->setObjectName("this");
     ui->LoginButton->setObjectName("LoginButton");
@@ -61,10 +64,14 @@ MainWindow::MainWindow(QWidget *parent)
     calendar->setObjectName("calendar");
 
 
-
     connect(ui->backToHomePage, &QPushButton::clicked, this, [=]() {
         ui->stackedWidget->setCurrentIndex(0);
     });
+
+    //connect(ui->Home_searchTo_pushButton, &QPushButton::clicked, this, &MainWindow::on_Home_searchFrom_pushButton_clicked);
+    connect(calendar, &QCalendarWidget::clicked, this, &MainWindow::calendarDataChoice);
+    ui->Home_DateFrom_pushButton->setText(QDate::currentDate().toString("MMM dd"));
+    ui->Home_DateTo_pushButton->setText(QDate::currentDate().addDays(1).toString("MMM dd"));
 
     loadCars("");
     setData(user);
@@ -102,6 +109,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->Order_icon_line->setScaledContents(true);
     ui->Order_iconLittleCar2->setPixmap(QPixmap("C:/Users/golov/Downloads/icons8-автомобиль-40"));
     ui->Order_iconLittleCar2->setScaledContents(true);
+
+    ui->Home_DateFrom_pushButton->setIcon(QPixmap("C:/Users/golov/Downloads/icons8-календарь-24.png"));
+    ui->Home_DateTo_pushButton->setIcon(QPixmap("C:/Users/golov/Downloads/icons8-календарь-24.png"));
+
+    ui->pushButton->setIcon(QPixmap("C:/Users/golov/Downloads/icons8-поиск-50.png"));
 }
 
 MainWindow::~MainWindow()
@@ -602,20 +614,59 @@ void MainWindow::on_setFilters_pushButton_clicked()
     layout->addStretch();
 }
 
-void MainWindow::on_Home_searchFrom_pushButton_clicked()
+void MainWindow::on_Home_DateFrom_pushButton_clicked()
 {
     applyStyleSheet();
-    QPoint pos = ui->Home_searchFrom_pushButton->mapToGlobal(QPoint(0, ui->Home_searchFrom_pushButton->height()));
+
+    ui->Home_DateFrom_pushButton->setChecked(true);
+    QDate today = QDate::currentDate();
+    calendar->setMinimumDate(today);
+
+    QPoint pos = ui->Home_DateFrom_pushButton->mapToGlobal(QPoint(0, ui->Home_DateFrom_pushButton->height()));
     calendar->move(pos);
     calendar->show();
     calendar->setMinimumWidth(500);
     calendar->setMinimumHeight(140);
-    QDate today = QDate::currentDate();
-    calendar->setMinimumDate(today);
+}
 
-    connect(calendar, &QCalendarWidget::clicked, this, [=](const QDate &date) {
-        ui->Home_searchFrom_pushButton->setText(date.toString("MMMM dd"));
+void MainWindow::calendarDataChoice(const QDate &date)
+{
+    if(ui->Home_DateFrom_pushButton->isChecked()) {
+        ui->Home_DateFrom_pushButton->setText(date.toString("MMM dd"));
+        ui->Home_DateFrom_pushButton->setChecked(false);
+        on_Home_DateTo_pushButton_clicked();
+
+    } else {
+        ui->Home_DateTo_pushButton->setText(date.toString("MMM dd"));
         calendar->hide();
-    });
+    }
+}
+
+bool MainWindow::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == calendar && event->type() == QEvent::Hide) {
+        ui->Home_DateFrom_pushButton->setChecked(false);
+        ui->Home_DateTo_pushButton->setChecked(false);
+    }
+
+    return QMainWindow::eventFilter(watched, event);
+}
+
+
+void MainWindow::on_Home_DateTo_pushButton_clicked()
+{
+    applyStyleSheet();
+    ui->Home_DateTo_pushButton->setChecked(true);
+
+    QString text = ui->Home_DateFrom_pushButton->text();
+    text += " " + QString::number(QDate::currentDate().year());
+    QDate fromDate = QDate::fromString(text, "MMM dd yyyy");
+    calendar->setMinimumDate(fromDate.addDays(1));
+
+    QPoint pos = ui->Home_DateTo_pushButton->mapToGlobal(QPoint(0, ui->Home_DateTo_pushButton->height()));
+    calendar->move(pos);
+    calendar->show();
+    calendar->setMinimumWidth(500);
+    calendar->setMinimumHeight(140);
 }
 

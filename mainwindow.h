@@ -46,7 +46,13 @@ private slots:
 
     void onSelectionChanged();
 
-    void on_Home_searchFrom_pushButton_clicked();
+    void on_Home_DateFrom_pushButton_clicked();
+
+    void calendarDataChoice(const QDate &date);
+
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
+    void on_Home_DateTo_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;

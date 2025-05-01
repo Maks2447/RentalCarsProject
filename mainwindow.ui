@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1146</width>
+    <width>1300</width>
     <height>942</height>
    </rect>
   </property>
@@ -104,7 +104,7 @@
             <number>0</number>
            </property>
            <property name="bottomMargin">
-            <number>11</number>
+            <number>7</number>
            </property>
            <item>
             <widget class="QLabel" name="label">
@@ -131,9 +131,9 @@
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="4,1,1">
+            <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="10,1,1">
              <property name="leftMargin">
-              <number>80</number>
+              <number>0</number>
              </property>
              <property name="topMargin">
               <number>5</number>
@@ -145,14 +145,25 @@
               <widget class="QFrame" name="frame">
                <property name="minimumSize">
                 <size>
-                 <width>500</width>
+                 <width>720</width>
                  <height>0</height>
                 </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>0</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <bold>false</bold>
+                </font>
                </property>
                <property name="styleSheet">
                 <string notr="true">#frame {
 	border: 1px solid white;
-	border-radius: 16px;
+	border-radius: 6px;
 }
 </string>
                </property>
@@ -162,9 +173,9 @@
                <property name="frameShadow">
                 <enum>QFrame::Shadow::Raised</enum>
                </property>
-               <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,0,0,0,0,1">
+               <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,2,0,0,0">
                 <property name="spacing">
-                 <number>7</number>
+                 <number>0</number>
                 </property>
                 <property name="leftMargin">
                  <number>10</number>
@@ -180,112 +191,286 @@
                 </property>
                 <item>
                  <widget class="QLabel" name="label_5">
-                  <property name="maximumSize">
-                   <size>
-                    <width>40</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>11</pointsize>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>From</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="Home_searchFrom_pushButton">
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>50</height>
+                    <height>0</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
                     <width>90</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">border: 1px solid orange;
-border-radius: 8px;</string>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QFrame" name="frame_2">
-                  <property name="maximumSize">
-                   <size>
-                    <width>1</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">border: 1px solid white;
-border-right: solid blue;
-border-top: solid blue;
-border-bottom: solid blue;</string>
-                  </property>
-                  <property name="frameShape">
-                   <enum>QFrame::Shape::StyledPanel</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Shadow::Raised</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_6">
-                  <property name="maximumSize">
-                   <size>
-                    <width>30</width>
-                    <height>16777215</height>
+                    <height>35</height>
                    </size>
                   </property>
                   <property name="font">
                    <font>
-                    <pointsize>11</pointsize>
+                    <pointsize>10</pointsize>
+                    <bold>true</bold>
                    </font>
                   </property>
+                  <property name="styleSheet">
+                   <string notr="true">color: rgb(255, 85, 0);</string>
+                  </property>
                   <property name="text">
-                   <string>To</string>
+                   <string>Pick-up date</string>
+                  </property>
+                  <property name="scaledContents">
+                   <bool>true</bool>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="Home_searchTo_pushButton">
+                 <widget class="QWidget" name="widget_4" native="true">
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>50</height>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>200</width>
+                    <height>39</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">#widget_4 {
+	border: none;
+	border-radius: 6px;
+}
+</string>
+                  </property>
+                  <widget class="QPushButton" name="Home_DateFrom_pushButton">
+                   <property name="geometry">
+                    <rect>
+                     <x>0</x>
+                     <y>0</y>
+                     <width>98</width>
+                     <height>39</height>
+                    </rect>
+                   </property>
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>13</pointsize>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton {
+	border: none;
+	border: 1px solid white;
+	border-radius: 8px;
+	border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+	text-align: middle;
+}
+
+QPushButton:checked {
+	border: 2px solid orange;
+	border-right: 3px solid orange;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>пукп</string>
+                   </property>
+                   <property name="icon">
+                    <iconset>
+                     <normaloff>../../../Downloads/icons8-календарь-24.png</normaloff>../../../Downloads/icons8-календарь-24.png</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>20</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="default">
+                    <bool>false</bool>
+                   </property>
+                   <property name="flat">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                  <widget class="QPushButton" name="Home_timePick_start">
+                   <property name="geometry">
+                    <rect>
+                     <x>97</x>
+                     <y>0</y>
+                     <width>98</width>
+                     <height>39</height>
+                    </rect>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton {
+	border: none;
+	border: 1px solid white;
+	border-radius: 8px;
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+	
+}
+QPushButton:checked {
+    border: 2px solid orange;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>PushButton</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_6">
+                  <property name="minimumSize">
+                   <size>
+                    <width>25</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>90</width>
+                    <height>35</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>10</pointsize>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">color: rgb(255, 85, 0);</string>
+                  </property>
+                  <property name="text">
+                   <string>Return date</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTop|Qt::AlignmentFlag::AlignTrailing</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QWidget" name="widget_7" native="true">
+                  <property name="maximumSize">
+                   <size>
+                    <width>200</width>
+                    <height>39</height>
+                   </size>
+                  </property>
+                  <widget class="QPushButton" name="Home_DateTo_pushButton">
+                   <property name="geometry">
+                    <rect>
+                     <x>0</x>
+                     <y>0</y>
+                     <width>98</width>
+                     <height>39</height>
+                    </rect>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>13</pointsize>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton {
+	border: none;
+	border: 1px solid white;
+	border-radius: 8px;
+	border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+	text-align: middle;
+}
+
+QPushButton:checked {
+	border: 2px solid orange;
+	border-right: 3px solid orange;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>20</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                  <widget class="QPushButton" name="Home_timePick_end">
+                   <property name="geometry">
+                    <rect>
+                     <x>97</x>
+                     <y>0</y>
+                     <width>98</width>
+                     <height>39</height>
+                    </rect>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton {
+	border: none;
+	border: 1px solid white;
+	border-radius: 8px;
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+	
+}
+QPushButton:checked {
+    border: 2px solid orange;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>PushButton</string>
+                   </property>
+                  </widget>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton">
+                  <property name="maximumSize">
+                   <size>
+                    <width>60</width>
+                    <height>40</height>
                    </size>
                   </property>
                   <property name="styleSheet">
                    <string notr="true">border: 1px solid orange;
-border-radius: 8px;</string>
+border-radius: 8px;
+border-top-left-radius: 0px;
+border-bottom-left-radius: 0px;
+background-color: orange;</string>
                   </property>
                   <property name="text">
                    <string/>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QFrame" name="frame_3">
-                  <property name="frameShape">
-                   <enum>QFrame::Shape::StyledPanel</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Shadow::Raised</enum>
                   </property>
                  </widget>
                 </item>
@@ -1222,7 +1407,7 @@ QCheckBox::indicator:checked {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>752</width>
+                <width>906</width>
                 <height>864</height>
                </rect>
               </property>
