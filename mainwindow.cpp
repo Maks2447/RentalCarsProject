@@ -13,6 +13,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QCalendarWidget>
+#include <QWidgetAction>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -70,8 +71,16 @@ MainWindow::MainWindow(QWidget *parent)
 
     //connect(ui->Home_searchTo_pushButton, &QPushButton::clicked, this, &MainWindow::on_Home_searchFrom_pushButton_clicked);
     connect(calendar, &QCalendarWidget::clicked, this, &MainWindow::calendarDataChoice);
-    ui->Home_DateFrom_pushButton->setText(QDate::currentDate().toString("MMM dd"));
-    ui->Home_DateTo_pushButton->setText(QDate::currentDate().addDays(1).toString("MMM dd"));
+    ui->Home_DayFrom_pushButton->setText(QDate::currentDate().toString("MMM dd"));
+    ui->Home_DayTo_pushButton->setText(QDate::currentDate().addDays(1).toString("MMM dd"));
+
+    QMenu *timePick_startMenu = new QMenu;
+    addRowsTime(*timePick_startMenu, "start");
+    QMenu *timePick_endMenu = new QMenu;
+    addRowsTime(*timePick_endMenu, "end");
+
+    ui->Home_timePick_start->setMenu(timePick_startMenu);
+    ui->Home_timePick_end->setMenu(timePick_endMenu);
 
     loadCars("");
     setData(user);
@@ -110,15 +119,102 @@ MainWindow::MainWindow(QWidget *parent)
     ui->Order_iconLittleCar2->setPixmap(QPixmap("C:/Users/golov/Downloads/icons8-автомобиль-40"));
     ui->Order_iconLittleCar2->setScaledContents(true);
 
-    ui->Home_DateFrom_pushButton->setIcon(QPixmap("C:/Users/golov/Downloads/icons8-календарь-24.png"));
-    ui->Home_DateTo_pushButton->setIcon(QPixmap("C:/Users/golov/Downloads/icons8-календарь-24.png"));
+    ui->Home_DayFrom_pushButton->setIcon(QPixmap("C:/Users/golov/Downloads/icons8-календарь-24.png"));
+    ui->Home_DayTo_pushButton->setIcon(QPixmap("C:/Users/golov/Downloads/icons8-календарь-24.png"));
 
-    ui->pushButton->setIcon(QPixmap("C:/Users/golov/Downloads/icons8-поиск-50.png"));
+    ui->Home_search_pushButton->setIcon(QPixmap("C:/Users/golov/Downloads/icons8-поиск-50.png"));
+
+    ui->Home_arrow_label->setPixmap(QPixmap("C:/Users/golov/Downloads/icons8-стрелка-50 (1).png"));
+    ui->Home_arrow_label->setScaledContents(true);
+
+    // ui->Home_timePick_start->setIcon(QPixmap("C:/Users/golov/Downloads/icons8-часы-32.png"));
+    // ui->Home_timePick_end->setIcon(QPixmap("C:/Users/golov/Downloads/icons8-часы-32.png"));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::addRowsTime(QMenu &menu, QString name) {
+
+    QWidget *widgetMenu = new QWidget();
+    QGridLayout *layout = new QGridLayout(widgetMenu);
+    widgetMenu->setLayout(layout);
+
+    QStringList timeListMorning = {
+        "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM"
+    };
+    QStringList timeListAfternoon = {
+        "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM"
+    };
+
+    int row = 0, col = 0;
+
+    QLabel *morningLabel = new QLabel("Утро");
+    layout->addWidget(morningLabel, row, 0, 1, 2);
+    row++;
+
+    for(int i = 0; i < timeListMorning.size(); i++) {
+        QPushButton *btn = new QPushButton(timeListMorning[i]);
+        btn->setFlat(true);
+        layout->addWidget(btn, row, col);
+
+        connect(btn, &QPushButton::clicked, this, [btn, name, &menu, this]() {
+            menu.hide();
+            if(name == "start") {
+                ui->Home_timePick_start->setText(btn->text());
+            } else {
+                ui->Home_timePick_end->setText(btn->text());
+            }
+        });
+
+        col++;
+        if(col == 2) {
+            col = 0;
+            row++;
+        }
+    }
+
+    row++;
+    QLabel *afternoonLabel = new QLabel("День");
+    layout->addWidget(afternoonLabel, row, 0, 1, 2);
+    row++;
+
+    col = 0;
+    for(int i = 0; i < timeListAfternoon.size(); i++) {
+        QPushButton *btn = new QPushButton(timeListAfternoon[i]);
+        btn->setFlat(true);
+        layout->addWidget(btn, row, col);
+
+        connect(btn, &QPushButton::clicked, this, [btn, name, &menu, this]() {
+            menu.hide();
+            if(name == "start") {
+                ui->Home_timePick_start->setText(btn->text());
+            } else {
+                ui->Home_timePick_end->setText(btn->text());
+            }
+        });
+
+        col++;
+        if(col == 2) {
+            col = 0;
+            row++;
+        }
+    }
+
+    QWidgetAction *widgetAction = new QWidgetAction(&menu);
+    widgetAction->setDefaultWidget(widgetMenu);
+    menu.addAction(widgetAction);
+
+    connect(&menu, &QMenu::aboutToHide, this, [widgetMenu, &menu]() {
+        // Проверка, если клик был на пустой области меню, то отменить закрытие
+        if (!widgetMenu->rect().contains(menu.pos())) {
+            menu.setVisible(false); // Не закрывать меню
+        }
+    });
+
+    widgetMenu->setStyleSheet("font-size: 16px;");
 }
 
 void MainWindow::loadCars(QString queryStr)
@@ -614,15 +710,15 @@ void MainWindow::on_setFilters_pushButton_clicked()
     layout->addStretch();
 }
 
-void MainWindow::on_Home_DateFrom_pushButton_clicked()
+void MainWindow::on_Home_DayFrom_pushButton_clicked()
 {
     applyStyleSheet();
 
-    ui->Home_DateFrom_pushButton->setChecked(true);
+    ui->Home_DayFrom_pushButton->setChecked(true);
     QDate today = QDate::currentDate();
     calendar->setMinimumDate(today);
 
-    QPoint pos = ui->Home_DateFrom_pushButton->mapToGlobal(QPoint(0, ui->Home_DateFrom_pushButton->height()));
+    QPoint pos = ui->Home_DayFrom_pushButton->mapToGlobal(QPoint(0, ui->Home_DayFrom_pushButton->height()));
     calendar->move(pos);
     calendar->show();
     calendar->setMinimumWidth(500);
@@ -631,13 +727,13 @@ void MainWindow::on_Home_DateFrom_pushButton_clicked()
 
 void MainWindow::calendarDataChoice(const QDate &date)
 {
-    if(ui->Home_DateFrom_pushButton->isChecked()) {
-        ui->Home_DateFrom_pushButton->setText(date.toString("MMM dd"));
-        ui->Home_DateFrom_pushButton->setChecked(false);
-        on_Home_DateTo_pushButton_clicked();
+    if(ui->Home_DayFrom_pushButton->isChecked()) {
+        ui->Home_DayFrom_pushButton->setText(date.toString("MMM dd"));
+        ui->Home_DayFrom_pushButton->setChecked(false);
+        on_Home_DayTo_pushButton_clicked();
 
     } else {
-        ui->Home_DateTo_pushButton->setText(date.toString("MMM dd"));
+        ui->Home_DayTo_pushButton->setText(date.toString("MMM dd"));
         calendar->hide();
     }
 }
@@ -645,25 +741,25 @@ void MainWindow::calendarDataChoice(const QDate &date)
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
     if (watched == calendar && event->type() == QEvent::Hide) {
-        ui->Home_DateFrom_pushButton->setChecked(false);
-        ui->Home_DateTo_pushButton->setChecked(false);
+        ui->Home_DayFrom_pushButton->setChecked(false);
+        ui->Home_DayTo_pushButton->setChecked(false);
     }
 
     return QMainWindow::eventFilter(watched, event);
 }
 
 
-void MainWindow::on_Home_DateTo_pushButton_clicked()
+void MainWindow::on_Home_DayTo_pushButton_clicked()
 {
     applyStyleSheet();
-    ui->Home_DateTo_pushButton->setChecked(true);
+    ui->Home_DayTo_pushButton->setChecked(true);
 
-    QString text = ui->Home_DateFrom_pushButton->text();
+    QString text = ui->Home_DayFrom_pushButton->text();
     text += " " + QString::number(QDate::currentDate().year());
     QDate fromDate = QDate::fromString(text, "MMM dd yyyy");
     calendar->setMinimumDate(fromDate.addDays(1));
 
-    QPoint pos = ui->Home_DateTo_pushButton->mapToGlobal(QPoint(0, ui->Home_DateTo_pushButton->height()));
+    QPoint pos = ui->Home_DayTo_pushButton->mapToGlobal(QPoint(0, ui->Home_DayTo_pushButton->height()));
     calendar->move(pos);
     calendar->show();
     calendar->setMinimumWidth(500);

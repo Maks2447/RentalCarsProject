@@ -90,7 +90,7 @@
 	
 }</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,4">
+          <layout class="QHBoxLayout" name="top_horizontalLayout_1" stretch="1,4">
            <property name="spacing">
             <number>7</number>
            </property>
@@ -131,9 +131,9 @@
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="10,1,1">
+            <layout class="QHBoxLayout" name="top_horizontalLayout_2" stretch="10,1,1">
              <property name="leftMargin">
-              <number>0</number>
+              <number>160</number>
              </property>
              <property name="topMargin">
               <number>5</number>
@@ -142,10 +142,10 @@
               <number>40</number>
              </property>
              <item>
-              <widget class="QFrame" name="frame">
+              <widget class="QFrame" name="Home_datePick_frame">
                <property name="minimumSize">
                 <size>
-                 <width>720</width>
+                 <width>620</width>
                  <height>0</height>
                 </size>
                </property>
@@ -161,11 +161,14 @@
                 </font>
                </property>
                <property name="styleSheet">
-                <string notr="true">#frame {
-	border: 1px solid white;
+                <string notr="true">#Home_datePick_frame {
+	border: 1px solid #bfbfbf;
 	border-radius: 6px;
+
 }
-</string>
+#Home_datePick_frame *{
+	background-color: #212121;
+}</string>
                </property>
                <property name="frameShape">
                 <enum>QFrame::Shape::StyledPanel</enum>
@@ -173,12 +176,12 @@
                <property name="frameShadow">
                 <enum>QFrame::Shadow::Raised</enum>
                </property>
-               <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,2,0,0,0">
+               <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="2,0,0,0">
                 <property name="spacing">
                  <number>0</number>
                 </property>
                 <property name="leftMargin">
-                 <number>10</number>
+                 <number>20</number>
                 </property>
                 <property name="topMargin">
                  <number>1</number>
@@ -190,7 +193,7 @@
                  <number>1</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="label_5">
+                 <widget class="QWidget" name="Home_pickDateFrom_widget" native="true">
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
@@ -199,41 +202,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>90</width>
-                    <height>35</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>10</pointsize>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">color: rgb(255, 85, 0);</string>
-                  </property>
-                  <property name="text">
-                   <string>Pick-up date</string>
-                  </property>
-                  <property name="scaledContents">
-                   <bool>true</bool>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QWidget" name="widget_4" native="true">
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>200</width>
+                    <width>206</width>
                     <height>39</height>
                    </size>
                   </property>
@@ -244,7 +213,7 @@
 }
 </string>
                   </property>
-                  <widget class="QPushButton" name="Home_DateFrom_pushButton">
+                  <widget class="QPushButton" name="Home_DayFrom_pushButton">
                    <property name="geometry">
                     <rect>
                      <x>0</x>
@@ -278,7 +247,6 @@
                    </property>
                    <property name="styleSheet">
                     <string notr="true">QPushButton {
-	border: none;
 	border: 1px solid white;
 	border-radius: 8px;
 	border-top-right-radius: 0px;
@@ -292,7 +260,7 @@ QPushButton:checked {
 }</string>
                    </property>
                    <property name="text">
-                    <string>пукп</string>
+                    <string/>
                    </property>
                    <property name="icon">
                     <iconset>
@@ -314,39 +282,65 @@ QPushButton:checked {
                     <bool>false</bool>
                    </property>
                   </widget>
-                  <widget class="QPushButton" name="Home_timePick_start">
+                  <widget class="QToolButton" name="Home_timePick_start">
                    <property name="geometry">
                     <rect>
                      <x>97</x>
                      <y>0</y>
-                     <width>98</width>
+                     <width>108</width>
                      <height>39</height>
                     </rect>
                    </property>
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
                    <property name="styleSheet">
-                    <string notr="true">QPushButton {
-	border: none;
+                    <string notr="true">QToolButton {
 	border: 1px solid white;
 	border-radius: 8px;
 	border-top-left-radius: 0px;
 	border-bottom-left-radius: 0px;
-	
+	padding: 4px;
 }
-QPushButton:checked {
+QToolButton:checked {
     border: 2px solid orange;
 }</string>
                    </property>
                    <property name="text">
-                    <string>PushButton</string>
+                    <string>10:00 AM</string>
+                   </property>
+                   <property name="icon">
+                    <iconset>
+                     <normaloff>../../../Downloads/icons8-часы-32.png</normaloff>../../../Downloads/icons8-часы-32.png</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>23</width>
+                     <height>23</height>
+                    </size>
                    </property>
                    <property name="checkable">
-                    <bool>false</bool>
+                    <bool>true</bool>
+                   </property>
+                   <property name="popupMode">
+                    <enum>QToolButton::ToolButtonPopupMode::InstantPopup</enum>
+                   </property>
+                   <property name="toolButtonStyle">
+                    <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
                    </property>
                   </widget>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_6">
+                 <widget class="QLabel" name="Home_arrow_label">
                   <property name="minimumSize">
                    <size>
                     <width>25</width>
@@ -355,7 +349,7 @@ QPushButton:checked {
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>90</width>
+                    <width>40</width>
                     <height>35</height>
                    </size>
                   </property>
@@ -366,10 +360,10 @@ QPushButton:checked {
                    </font>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">color: rgb(255, 85, 0);</string>
+                   <string notr="true">background-color: #141414;</string>
                   </property>
                   <property name="text">
-                   <string>Return date</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTop|Qt::AlignmentFlag::AlignTrailing</set>
@@ -377,14 +371,14 @@ QPushButton:checked {
                  </widget>
                 </item>
                 <item>
-                 <widget class="QWidget" name="widget_7" native="true">
+                 <widget class="QWidget" name="Home_pickDateTo_widget" native="true">
                   <property name="maximumSize">
                    <size>
-                    <width>200</width>
+                    <width>206</width>
                     <height>39</height>
                    </size>
                   </property>
-                  <widget class="QPushButton" name="Home_DateTo_pushButton">
+                  <widget class="QPushButton" name="Home_DayTo_pushButton">
                    <property name="geometry">
                     <rect>
                      <x>0</x>
@@ -400,7 +394,6 @@ QPushButton:checked {
                    </property>
                    <property name="styleSheet">
                     <string notr="true">QPushButton {
-	border: none;
 	border: 1px solid white;
 	border-radius: 8px;
 	border-top-right-radius: 0px;
@@ -426,36 +419,55 @@ QPushButton:checked {
                     <bool>true</bool>
                    </property>
                   </widget>
-                  <widget class="QPushButton" name="Home_timePick_end">
+                  <widget class="QToolButton" name="Home_timePick_end">
                    <property name="geometry">
                     <rect>
                      <x>97</x>
                      <y>0</y>
-                     <width>98</width>
+                     <width>108</width>
                      <height>39</height>
                     </rect>
                    </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
                    <property name="styleSheet">
-                    <string notr="true">QPushButton {
-	border: none;
+                    <string notr="true">QToolButton {
 	border: 1px solid white;
 	border-radius: 8px;
 	border-top-left-radius: 0px;
 	border-bottom-left-radius: 0px;
-	
+	padding: 4px;
 }
-QPushButton:checked {
+QToolButton:checked {
     border: 2px solid orange;
 }</string>
                    </property>
                    <property name="text">
-                    <string>PushButton</string>
+                    <string>11:00 AM</string>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>23</width>
+                     <height>23</height>
+                    </size>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="popupMode">
+                    <enum>QToolButton::ToolButtonPopupMode::InstantPopup</enum>
+                   </property>
+                   <property name="toolButtonStyle">
+                    <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
                    </property>
                   </widget>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="pushButton">
+                 <widget class="QPushButton" name="Home_search_pushButton">
                   <property name="maximumSize">
                    <size>
                     <width>60</width>
@@ -465,9 +477,9 @@ QPushButton:checked {
                   <property name="styleSheet">
                    <string notr="true">border: 1px solid orange;
 border-radius: 8px;
-border-top-left-radius: 0px;
-border-bottom-left-radius: 0px;
-background-color: orange;</string>
+background-color: orange;
+/* border-top-left-radius: 0px;
+border-bottom-left-radius: 0px; */</string>
                   </property>
                   <property name="text">
                    <string/>
@@ -2708,6 +2720,22 @@ padding-bottom: 15px;</string>
                </property>
                <property name="text">
                 <string>PushButton</string>
+               </property>
+              </widget>
+              <widget class="QToolButton" name="toolButton">
+               <property name="geometry">
+                <rect>
+                 <x>490</x>
+                 <y>180</y>
+                 <width>211</width>
+                 <height>51</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>...</string>
+               </property>
+               <property name="popupMode">
+                <enum>QToolButton::ToolButtonPopupMode::MenuButtonPopup</enum>
                </property>
               </widget>
              </widget>
