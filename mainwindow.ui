@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1300</width>
+    <width>1468</width>
     <height>942</height>
    </rect>
   </property>
@@ -162,7 +162,7 @@
                </property>
                <property name="styleSheet">
                 <string notr="true">#Home_datePick_frame {
-	border: 1px solid #bfbfbf;
+	
 	border-radius: 6px;
 
 }
@@ -202,14 +202,15 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>206</width>
+                    <width>205</width>
                     <height>39</height>
                    </size>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">#widget_4 {
+                   <string notr="true">QWidget {
 	border: none;
-	border-radius: 6px;
+	background-color:#212121;
+	border-radius: 16px;
 }
 </string>
                   </property>
@@ -309,9 +310,6 @@ QPushButton:checked {
 	border-top-left-radius: 0px;
 	border-bottom-left-radius: 0px;
 	padding: 4px;
-}
-QToolButton:checked {
-    border: 2px solid orange;
 }</string>
                    </property>
                    <property name="text">
@@ -328,7 +326,10 @@ QToolButton:checked {
                     </size>
                    </property>
                    <property name="checkable">
-                    <bool>true</bool>
+                    <bool>false</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
                    </property>
                    <property name="popupMode">
                     <enum>QToolButton::ToolButtonPopupMode::InstantPopup</enum>
@@ -374,9 +375,17 @@ QToolButton:checked {
                  <widget class="QWidget" name="Home_pickDateTo_widget" native="true">
                   <property name="maximumSize">
                    <size>
-                    <width>206</width>
+                    <width>205</width>
                     <height>39</height>
                    </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QWidget {
+	border: none;
+	background-color:#212121;
+	border-radius: 16px;
+}
+</string>
                   </property>
                   <widget class="QPushButton" name="Home_DayTo_pushButton">
                    <property name="geometry">
@@ -440,9 +449,6 @@ QPushButton:checked {
 	border-top-left-radius: 0px;
 	border-bottom-left-radius: 0px;
 	padding: 4px;
-}
-QToolButton:checked {
-    border: 2px solid orange;
 }</string>
                    </property>
                    <property name="text">
@@ -455,7 +461,7 @@ QToolButton:checked {
                     </size>
                    </property>
                    <property name="checkable">
-                    <bool>true</bool>
+                    <bool>false</bool>
                    </property>
                    <property name="popupMode">
                     <enum>QToolButton::ToolButtonPopupMode::InstantPopup</enum>
@@ -477,9 +483,7 @@ QToolButton:checked {
                   <property name="styleSheet">
                    <string notr="true">border: 1px solid orange;
 border-radius: 8px;
-background-color: orange;
-/* border-top-left-radius: 0px;
-border-bottom-left-radius: 0px; */</string>
+background-color: orange;</string>
                   </property>
                   <property name="text">
                    <string/>
@@ -1419,7 +1423,7 @@ QCheckBox::indicator:checked {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>906</width>
+                <width>1074</width>
                 <height>864</height>
                </rect>
               </property>
@@ -1551,7 +1555,7 @@ QCheckBox::indicator:checked {
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>570</width>
+                   <width>974</width>
                    <height>1114</height>
                   </rect>
                  </property>

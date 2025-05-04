@@ -44,8 +44,6 @@ private slots:
 
     QPixmap roundedPixmap(const QPixmap &src, int radius);
 
-    void onSelectionChanged();
-
     void on_Home_DayFrom_pushButton_clicked();
 
     void calendarDataChoice(const QDate &date);
@@ -54,7 +52,7 @@ private slots:
 
     void on_Home_DayTo_pushButton_clicked();
 
-    void addRowsTime(QMenu &menu, QString name);
+    void addRowsTime(QMenu &menu, QToolButton *name);
 
 private:
     Ui::MainWindow *ui;

@@ -75,9 +75,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->Home_DayTo_pushButton->setText(QDate::currentDate().addDays(1).toString("MMM dd"));
 
     QMenu *timePick_startMenu = new QMenu;
-    addRowsTime(*timePick_startMenu, "start");
+    addRowsTime(*timePick_startMenu, ui->Home_timePick_start);
     QMenu *timePick_endMenu = new QMenu;
-    addRowsTime(*timePick_endMenu, "end");
+    addRowsTime(*timePick_endMenu, ui->Home_timePick_end);
 
     ui->Home_timePick_start->setMenu(timePick_startMenu);
     ui->Home_timePick_end->setMenu(timePick_endMenu);
@@ -126,9 +126,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->Home_arrow_label->setPixmap(QPixmap("C:/Users/golov/Downloads/icons8-стрелка-50 (1).png"));
     ui->Home_arrow_label->setScaledContents(true);
-
-    // ui->Home_timePick_start->setIcon(QPixmap("C:/Users/golov/Downloads/icons8-часы-32.png"));
-    // ui->Home_timePick_end->setIcon(QPixmap("C:/Users/golov/Downloads/icons8-часы-32.png"));
 }
 
 MainWindow::~MainWindow()
@@ -136,11 +133,41 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::addRowsTime(QMenu &menu, QString name) {
+void MainWindow::addRowsTime(QMenu &menu, QToolButton *name) {
 
     QWidget *widgetMenu = new QWidget();
-    QGridLayout *layout = new QGridLayout(widgetMenu);
+    QVBoxLayout *layout = new QVBoxLayout(widgetMenu);
+    layout->setContentsMargins(0, 0, 0, 0);
     widgetMenu->setLayout(layout);
+    layout->setSpacing(0);
+
+    QWidget *titleWidget = new QWidget();
+    QHBoxLayout *titleLayout = new QHBoxLayout();
+    titleWidget->setLayout(titleLayout);
+    titleWidget->setStyleSheet("border-bottom: 1px solid white;");
+    titleLayout->setContentsMargins(40, 10, 10, 10);
+
+    QWidget *widgetButtons = new QWidget();
+    QGridLayout *layoutButtons = new QGridLayout(widgetButtons);
+    widgetButtons->setLayout(layoutButtons);
+    layoutButtons->setContentsMargins(10, 10, 10, 10);
+
+    layout->addWidget(titleWidget);
+    layout->addWidget(widgetButtons);
+
+
+    QLabel *titleTextLabel = new QLabel("Select pickup time");
+    titleTextLabel->setStyleSheet("font-size: 18px;");
+    titleTextLabel->setAlignment(Qt::AlignLeft);
+    QLabel *titleIconLabel = new QLabel();
+    titleIconLabel->setPixmap(QPixmap("C:/Users/golov/Downloads/icons8-часы-32.png"));
+    titleIconLabel->setAlignment(Qt::AlignRight);
+    titleIconLabel->setFixedSize(20,20);
+    titleIconLabel->setScaledContents(true);
+
+    titleLayout->addWidget(titleIconLabel);
+    titleLayout->addWidget(titleTextLabel);
+
 
     QStringList timeListMorning = {
         "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM"
@@ -151,22 +178,19 @@ void MainWindow::addRowsTime(QMenu &menu, QString name) {
 
     int row = 0, col = 0;
 
-    QLabel *morningLabel = new QLabel("Утро");
-    layout->addWidget(morningLabel, row, 0, 1, 2);
+
+    QLabel *morningLabel = new QLabel("Morning");
+    layoutButtons->addWidget(morningLabel, row, 0, 1, 2);
     row++;
 
     for(int i = 0; i < timeListMorning.size(); i++) {
         QPushButton *btn = new QPushButton(timeListMorning[i]);
-        btn->setFlat(true);
-        layout->addWidget(btn, row, col);
+        btn->setFixedSize(115,42);
+        layoutButtons->addWidget(btn, row, col);
 
         connect(btn, &QPushButton::clicked, this, [btn, name, &menu, this]() {
             menu.hide();
-            if(name == "start") {
-                ui->Home_timePick_start->setText(btn->text());
-            } else {
-                ui->Home_timePick_end->setText(btn->text());
-            }
+            name->setText(btn->text());
         });
 
         col++;
@@ -177,23 +201,19 @@ void MainWindow::addRowsTime(QMenu &menu, QString name) {
     }
 
     row++;
-    QLabel *afternoonLabel = new QLabel("День");
-    layout->addWidget(afternoonLabel, row, 0, 1, 2);
+    QLabel *afternoonLabel = new QLabel("Afternoon");
+    layoutButtons->addWidget(afternoonLabel, row, 0, 1, 2);
     row++;
 
     col = 0;
     for(int i = 0; i < timeListAfternoon.size(); i++) {
         QPushButton *btn = new QPushButton(timeListAfternoon[i]);
-        btn->setFlat(true);
-        layout->addWidget(btn, row, col);
+        btn->setFixedSize(115,42);
+        layoutButtons->addWidget(btn, row, col);
 
         connect(btn, &QPushButton::clicked, this, [btn, name, &menu, this]() {
             menu.hide();
-            if(name == "start") {
-                ui->Home_timePick_start->setText(btn->text());
-            } else {
-                ui->Home_timePick_end->setText(btn->text());
-            }
+            name->setText(btn->text());
         });
 
         col++;
@@ -207,14 +227,48 @@ void MainWindow::addRowsTime(QMenu &menu, QString name) {
     widgetAction->setDefaultWidget(widgetMenu);
     menu.addAction(widgetAction);
 
-    connect(&menu, &QMenu::aboutToHide, this, [widgetMenu, &menu]() {
-        // Проверка, если клик был на пустой области меню, то отменить закрытие
-        if (!widgetMenu->rect().contains(menu.pos())) {
-            menu.setVisible(false); // Не закрывать меню
-        }
+    menu.setStyleSheet("QMenu {"
+                       "    background-color: #212121;"
+                       "}"
+                       "QMenu *{"
+                       "    color: white;"
+                       "    font-size: 16px;"
+                       "    font-weight: 600;"
+                       "}"
+                       "QPushButton {"
+                       "    background-color: orange;"
+                       "    border-radius: 8px;"
+                       "}"
+                       "QPushButton::pressed {"
+                       "    background-color: #d67600;"
+                       "}");
+
+    connect(&menu, &QMenu::aboutToShow, this, [=]() {
+        name->setStyleSheet("QToolButton {"
+                            "   border: 1px solid white;"
+                            "   border-radius: 8px;"
+                            "   border-top-left-radius: 0px;"
+                            "   border-bottom-left-radius: 0px;"
+                            "   padding: 4px;"
+                            "}"
+                            "QToolButton:pressed {"
+                            "    border: 2px solid orange;"
+                            "}"
+                            "QToolButton:checked {"
+                            "    border: 2px solid orange;"
+                            "}");
     });
 
-    widgetMenu->setStyleSheet("font-size: 16px;");
+    connect(&menu, &QMenu::aboutToHide, this, [=]() {
+        name->setStyleSheet("QToolButton {"
+                            "border: 1px solid white;"
+                            "border-radius: 8px;"
+                            "border-top-left-radius: 0px;"
+                            "border-bottom-left-radius: 0px;"
+                            "padding: 4px;"
+                            "}");
+    });
+
 }
 
 void MainWindow::loadCars(QString queryStr)
@@ -535,25 +589,6 @@ QPixmap MainWindow::roundedPixmap(const QPixmap &src, int radius)
     painter.drawPixmap(0, 0, src);
 
     return dest;
-}
-
-void MainWindow::onSelectionChanged()
-{
-    // QCalendarWidget *calendar = ui->dateEdit->calendarWidget();  // Получаем календарь
-
-    // // Получаем выбранную дату
-    // QDate selectedDate = calendar->selectedDate();
-
-    // // Если выбрана только одна дата
-    // if (selectedDate.isValid()) {
-    //     if (ui->dateEdit->date() == QDate()) {
-    //         // Если поле для начальной даты пустое, то это будет начальная дата
-    //         ui->dateEdit->setDate(selectedDate);
-    //     } else {
-    //         // Если начальная дата уже установлена, то считаем эту датой конечной
-    //         ui->dateEdit_2->setDate(selectedDate);
-    //     }
-    // }
 }
 
 void MainWindow::on_LoginButton_clicked()
