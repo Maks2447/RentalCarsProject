@@ -72,7 +72,9 @@ MainWindow::MainWindow(QWidget *parent)
     //connect(ui->Home_searchTo_pushButton, &QPushButton::clicked, this, &MainWindow::on_Home_searchFrom_pushButton_clicked);
     connect(calendar, &QCalendarWidget::clicked, this, &MainWindow::calendarDataChoice);
     ui->Home_DayFrom_pushButton->setText(QDate::currentDate().toString("MMM dd"));
+    start_date = QDate::currentDate();
     ui->Home_DayTo_pushButton->setText(QDate::currentDate().addDays(1).toString("MMM dd"));
+    end_date = QDate::currentDate();
 
     QMenu *timePick_startMenu = new QMenu;
     addRowsTime(*timePick_startMenu, ui->Home_timePick_start);
@@ -83,9 +85,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->Home_timePick_end->setMenu(timePick_endMenu);
 
     loadCars("");
-    setData(user);
+    //setData(user);
     applyStyleSheet();
-
 
     //calendar->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
 
@@ -126,6 +127,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->Home_arrow_label->setPixmap(QPixmap("C:/Users/golov/Downloads/icons8-стрелка-50 (1).png"));
     ui->Home_arrow_label->setScaledContents(true);
+
+    ui->backToHomePage->setIcon(QIcon("C:/Users/golov/Downloads/icons8-back-52"));
 }
 
 MainWindow::~MainWindow()
@@ -188,7 +191,7 @@ void MainWindow::addRowsTime(QMenu &menu, QToolButton *name) {
         btn->setFixedSize(115,42);
         layoutButtons->addWidget(btn, row, col);
 
-        connect(btn, &QPushButton::clicked, this, [btn, name, &menu, this]() {
+        connect(btn, &QPushButton::clicked, this, [btn, name, &menu]() {
             menu.hide();
             name->setText(btn->text());
         });
@@ -211,7 +214,7 @@ void MainWindow::addRowsTime(QMenu &menu, QToolButton *name) {
         btn->setFixedSize(115,42);
         layoutButtons->addWidget(btn, row, col);
 
-        connect(btn, &QPushButton::clicked, this, [btn, name, &menu, this]() {
+        connect(btn, &QPushButton::clicked, this, [btn, name, &menu]() {
             menu.hide();
             name->setText(btn->text());
         });
@@ -273,7 +276,7 @@ void MainWindow::addRowsTime(QMenu &menu, QToolButton *name) {
 
 void MainWindow::loadCars(QString queryStr)
 {
-
+    clearCars();
     QString iconGas = "C:/Users/golov/Downloads/gasstation_icon.png";
     QString iconTransm = "C:/Users/golov/Downloads/icons8-селектор-коробки-передач-64.png";
     QString iconPassengers = "C:/Users/golov/Downloads/icons8-человек-64.png";
@@ -446,8 +449,9 @@ void MainWindow::loadCars(QString queryStr)
         carClas->setObjectName("carClas");
         status->setObjectName("status");
         orderButton->setObjectName("orderButton");
-        //>>
+        //>> 
     }
+    layout->addStretch();
 }
 
 void MainWindow::setData(const UserData &user)
@@ -458,11 +462,11 @@ void MainWindow::setData(const UserData &user)
     double loginButtonWidth;
 
     QString UserName = currentUser.name + " " +currentUser.surname;
-    UserName = "Maksym Holoviznyi";
+    //UserName = "Maksym Holoviznyi";
     QFontMetrics fm(ui->LoginButton->font());
     int textWidth = fm.horizontalAdvance(UserName);
 
-    loginButtonWidth = textWidth + 40;
+    loginButtonWidth = textWidth + 30;
 
     ui->LoginButton->setMinimumWidth(loginButtonWidth);
     ui->LoginButton->setMaximumWidth(loginButtonWidth);
@@ -535,9 +539,6 @@ void MainWindow::setData(const UserData &user)
         "   margin: 5px 0;"
         "}"
         );
-
-    //ui->stackedWidget->setCurrentWidget(ui->page_2);
-    //connect(ui->LoginButton, &QPushButton::clicked(), this, )
 }
 
 void MainWindow::applyStyleSheet()
@@ -550,7 +551,7 @@ void MainWindow::applyStyleSheet()
 void MainWindow::orderCarShow(const QVector<QString>& carData, const QPixmap &photoPixmap)
 {
     double price = carData[5].toInt() + 4.5;
-    ui->backToHomePage->setIcon(QIcon("C:/Users/golov/Downloads/icons8-back-52"));
+
 
     ui->stackedWidget->setCurrentWidget(ui->OrderPage);
     qDebug() << currentUser.name;
@@ -560,11 +561,8 @@ void MainWindow::orderCarShow(const QVector<QString>& carData, const QPixmap &ph
     }
 
     QPixmap scaled = photoPixmap.scaled(ui->Order_photo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-    // 2. Потом округляем углы
     QPixmap rounded = roundedPixmap(scaled, 10);
 
-    // 3. Устанавливаем изображение с округленными углами
     ui->Order_photo->setPixmap(rounded);
     ui->Order_photo->setScaledContents(true);
 
@@ -740,9 +738,7 @@ void MainWindow::resetFilters_clicked()
 
 void MainWindow::on_setFilters_pushButton_clicked()
 {
-    clearCars();
     loadCars(getFilters());
-    layout->addStretch();
 }
 
 void MainWindow::on_Home_DayFrom_pushButton_clicked()
@@ -764,12 +760,14 @@ void MainWindow::calendarDataChoice(const QDate &date)
 {
     if(ui->Home_DayFrom_pushButton->isChecked()) {
         ui->Home_DayFrom_pushButton->setText(date.toString("MMM dd"));
+        start_date = date;
         ui->Home_DayFrom_pushButton->setChecked(false);
         on_Home_DayTo_pushButton_clicked();
 
     } else {
         ui->Home_DayTo_pushButton->setText(date.toString("MMM dd"));
         calendar->hide();
+        end_date = date;
     }
 }
 
@@ -801,3 +799,14 @@ void MainWindow::on_Home_DayTo_pushButton_clicked()
     calendar->setMinimumHeight(140);
 }
 
+void MainWindow::on_Home_search_pushButton_clicked()
+{
+
+    QString queryStr = QString(
+           "SELECT * FROM \"Cars\" WHERE \"id_car\" NOT IN ("
+           "SELECT \"car_id\" FROM \"Orders\" "
+           "WHERE NOT ('%1' > \"end_date\" OR '%2' < \"start_date\"))"
+           ).arg(start_date.toString("yyyy-MM-dd"), end_date.toString("yyyy-MM-dd"));
+
+    loadCars(queryStr);
+}

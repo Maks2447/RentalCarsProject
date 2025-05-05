@@ -54,6 +54,8 @@ private slots:
 
     void addRowsTime(QMenu &menu, QToolButton *name);
 
+    void on_Home_search_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -69,5 +71,8 @@ private:
     QCalendarWidget *calendar;
 
     bool isLogin;
+
+    QDate start_date;
+    QDate end_date;
 };
 #endif // MAINWINDOW_H
