@@ -69,7 +69,7 @@ private:
     QWidget *container;
     QVBoxLayout *layout;
 
-    //UserData user;
+    UserData user;
     QMenu *menu;
 
     QCalendarWidget *calendar;
@@ -80,5 +80,7 @@ private:
     QDate end_date;
 
     QString car_id;
+
+    QString oldStyle;
 };
 #endif // MAINWINDOW_H

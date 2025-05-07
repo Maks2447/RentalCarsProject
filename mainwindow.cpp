@@ -15,6 +15,7 @@
 #include <QCalendarWidget>
 #include <QWidgetAction>
 #include <QRegularExpressionValidator>
+#include <QTabBar>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -63,6 +64,7 @@ MainWindow::MainWindow(QWidget *parent)
     container->setObjectName("container");
     ui->setFilters_pushButton->setObjectName("setFilters");
     ui->OrderPage->setObjectName("OrderPage");
+    oldStyle = ui->Order_age_checkBox->styleSheet();
     calendar->setObjectName("calendar");
 
 
@@ -86,7 +88,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->Home_timePick_end->setMenu(timePick_endMenu);
 
     loadCars("");
-    //setData(user);
+    setData(user);
     applyStyleSheet();
     set_validator();
 
@@ -133,13 +135,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->backToHomePage->setIcon(QIcon("C:/Users/golov/Downloads/icons8-back-52"));
 
-    QSqlQuery query;
-    query.prepare("INSERT INTO \"Orders\" (\"user_id\", \"car_id\", \"start_date\", \"end_date\")"
-                  "VALUES(1, 0, '2025-05-07', '2025-05-09')");
-    if(query.exec()) {
-        qDebug() << "Nice";
-    } else {
-        qDebug() << "Not Nice";
+    for(QPushButton *button : this->findChildren<QPushButton*>()) {
+        button->setCursor(Qt::PointingHandCursor);
+    }
+    for(QCheckBox *checkBox : this->findChildren<QCheckBox*>()) {
+        checkBox->setCursor(Qt::PointingHandCursor);
     }
 }
 
@@ -469,23 +469,23 @@ void MainWindow::loadCars(QString queryStr)
 void MainWindow::setData(const UserData &user)
 {
     currentUser = user;
-    //isLogin = true;
+    isLogin = true;
 
     double loginButtonWidth;
 
     QString UserName = currentUser.name + " " +currentUser.surname;
-    //UserName = "Maksym Holoviznyi";
+    UserName = "Maksym Holoviznyi";
     QFontMetrics fm(ui->LoginButton->font());
     int textWidth = fm.horizontalAdvance(UserName);
 
-    loginButtonWidth = textWidth + 30;
+    loginButtonWidth = textWidth + 40;
 
     ui->LoginButton->setMinimumWidth(loginButtonWidth);
     ui->LoginButton->setMaximumWidth(loginButtonWidth);
 
     ui->LoginButton->setText(UserName);
 
-    qDebug() << loginButtonWidth;
+    ui->label_2->installEventFilter(this);
 
     QMenu *menu = new QMenu(this);
 
@@ -498,14 +498,20 @@ void MainWindow::setData(const UserData &user)
     menu->addSeparator();
     QAction *logout = menu->addAction("logout");
 
-    connect(account, &QAction::triggered, this, [=](){
-        ui->stackedWidget->setCurrentWidget(ui->ProfilePage);
-        ui->tabWidget->setCurrentWidget(ui->Profile_account_page);
-    });
-
     connect(bookings, &QAction::triggered, this, [=](){
         ui->stackedWidget->setCurrentWidget(ui->ProfilePage);
         ui->tabWidget->setCurrentWidget(ui->Profile_Booking_page);
+    });
+
+    QTabBar *tabBar = ui->tabWidget_2->tabBar();
+
+    int index = tabBar->insertTab(0, "My bookings");
+    tabBar->setTabEnabled(index, false);
+    tabBar->setStyleSheet("QTabBar::tab:first {background: transparent; color: white; font: 32px; margin-top: -5px; padding-top: -0px; padding-right: 15px; padding-left: -35px;}");
+
+    connect(account, &QAction::triggered, this, [=](){
+        ui->stackedWidget->setCurrentWidget(ui->ProfilePage);
+        ui->tabWidget->setCurrentWidget(ui->Profile_account_page);
     });
 
     connect(logout, &QAction::triggered, this, [=](){
@@ -552,6 +558,7 @@ void MainWindow::setData(const UserData &user)
         "}"
         );
 }
+
 
 void MainWindow::applyStyleSheet()
 {
@@ -788,11 +795,16 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
     if (watched == calendar && event->type() == QEvent::Hide) {
         ui->Home_DayFrom_pushButton->setChecked(false);
         ui->Home_DayTo_pushButton->setChecked(false);
+        return true;
+    }
+
+    if (watched == ui->label_2 && event->type() == QEvent::MouseButtonPress) {
+        ui->stackedWidget->setCurrentWidget(ui->HomePage);
+        return true;
     }
 
     return QMainWindow::eventFilter(watched, event);
 }
-
 
 void MainWindow::on_Home_DayTo_pushButton_clicked()
 {
@@ -838,6 +850,12 @@ void MainWindow::on_Order_button_clicked()
         } else {
             lineEdit->setStyleSheet("");
         }
+    }
+
+    if(!ui->Order_age_checkBox->isChecked()) {
+        ui->Order_age_checkBox->setStyleSheet(oldStyle + "QCheckBox {color: red;}");
+    } else {
+        ui->Order_age_checkBox->setStyleSheet(oldStyle);
     }
 
     if(isEmpty) return;
