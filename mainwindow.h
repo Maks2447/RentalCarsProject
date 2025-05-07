@@ -56,6 +56,10 @@ private slots:
 
     void on_Home_search_pushButton_clicked();
 
+    void on_Order_button_clicked();
+
+    void set_validator();
+
 private:
     Ui::MainWindow *ui;
 
@@ -65,7 +69,7 @@ private:
     QWidget *container;
     QVBoxLayout *layout;
 
-    UserData user;
+    //UserData user;
     QMenu *menu;
 
     QCalendarWidget *calendar;
@@ -74,5 +78,7 @@ private:
 
     QDate start_date;
     QDate end_date;
+
+    QString car_id;
 };
 #endif // MAINWINDOW_H

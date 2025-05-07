@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1161</width>
-    <height>940</height>
+    <height>1300</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -45,7 +45,7 @@
     <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="HomePage">
        <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0" columnstretch="0,1,9" rowminimumheight="10,0,0">
@@ -1424,7 +1424,7 @@ QCheckBox::indicator:checked {
                 <x>0</x>
                 <y>0</y>
                 <width>767</width>
-                <height>862</height>
+                <height>1222</height>
                </rect>
               </property>
               <property name="styleSheet">
@@ -1556,7 +1556,7 @@ QCheckBox::indicator:checked {
                    <x>0</x>
                    <y>0</y>
                    <width>706</width>
-                   <height>1114</height>
+                   <height>1149</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_17">
@@ -1871,7 +1871,14 @@ font-weight: 600;</string>
                      </widget>
                     </item>
                     <item row="6" column="0">
-                     <widget class="QLineEdit" name="Order_date_lineEdit"/>
+                     <widget class="QLineEdit" name="Order_date_lineEdit">
+                      <property name="inputMask">
+                       <string/>
+                      </property>
+                      <property name="placeholderText">
+                       <string/>
+                      </property>
+                     </widget>
                     </item>
                     <item row="6" column="1">
                      <widget class="QLineEdit" name="Order_CVV_lineEdit"/>

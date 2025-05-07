@@ -72,7 +72,7 @@ void RegistrDialog::signIn()
 
     if(query.exec()) {
         if(query.next()) {
-            currentUser.id = query.value("id_user").toInt();
+            currentUser.id_user = query.value("id_user").toInt();
             currentUser.name = query.value("name").toString();
             currentUser.surname = query.value("surname").toString();
             currentUser.email = query.value("email").toString();
@@ -122,7 +122,7 @@ void RegistrDialog::createAccount()
         query.bindValue(":password", password);
 
         if(query.exec()) {
-            currentUser.id = query.value("id").toInt();
+            currentUser.id_user = query.value("id").toInt();
             currentUser.name = query.value("name").toString();
             currentUser.surname = query.value("surname").toString();
             currentUser.email = query.value("email").toString();
@@ -200,11 +200,11 @@ void RegistrDialog::applyStyleSheetDialog()
 
 void RegistrDialog::validators()
 {
-    QRegularExpression NameExpr("^[A-Za-zА-Яа-яЁё]{2,20}$");
+    QRegularExpression NameExpr("^[A-Za-zА-Яа-яЁё]{2,15}$");
     QRegularExpressionValidator *NameValidator = new QRegularExpressionValidator(NameExpr, this);
     ui->lineEditName->setValidator(NameValidator);
 
-    QRegularExpression SurnameExpr("^[A-Za-zА-Яа-яЁё]{2,20}$");
+    QRegularExpression SurnameExpr("^[A-Za-zА-Яа-яЁё]{2,15}$");
     QRegularExpressionValidator *SurnameValidator = new QRegularExpressionValidator(SurnameExpr, this);
     ui->lineEditSurname->setValidator(SurnameValidator);
 

@@ -14,6 +14,7 @@
 #include <QPainterPath>
 #include <QCalendarWidget>
 #include <QWidgetAction>
+#include <QRegularExpressionValidator>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -87,6 +88,7 @@ MainWindow::MainWindow(QWidget *parent)
     loadCars("");
     //setData(user);
     applyStyleSheet();
+    set_validator();
 
     //calendar->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
 
@@ -113,6 +115,7 @@ MainWindow::MainWindow(QWidget *parent)
     //     "}"
     //     );
 
+
     ui->Order_iconLittleCar1->setPixmap(QPixmap("C:/Users/golov/Downloads/icons8-автомобиль-40"));
     ui->Order_iconLittleCar1->setScaledContents(true);
     ui->Order_icon_line->setPixmap(QPixmap("C:/Users/golov/Downloads/icons8-вертикальная-линия-50"));
@@ -129,6 +132,15 @@ MainWindow::MainWindow(QWidget *parent)
     ui->Home_arrow_label->setScaledContents(true);
 
     ui->backToHomePage->setIcon(QIcon("C:/Users/golov/Downloads/icons8-back-52"));
+
+    QSqlQuery query;
+    query.prepare("INSERT INTO \"Orders\" (\"user_id\", \"car_id\", \"start_date\", \"end_date\")"
+                  "VALUES(1, 0, '2025-05-07', '2025-05-09')");
+    if(query.exec()) {
+        qDebug() << "Nice";
+    } else {
+        qDebug() << "Not Nice";
+    }
 }
 
 MainWindow::~MainWindow()
@@ -457,7 +469,7 @@ void MainWindow::loadCars(QString queryStr)
 void MainWindow::setData(const UserData &user)
 {
     currentUser = user;
-    isLogin = true;
+    //isLogin = true;
 
     double loginButtonWidth;
 
@@ -550,8 +562,8 @@ void MainWindow::applyStyleSheet()
 
 void MainWindow::orderCarShow(const QVector<QString>& carData, const QPixmap &photoPixmap)
 {
+    car_id = carData[8];
     double price = carData[5].toInt() + 4.5;
-
 
     ui->stackedWidget->setCurrentWidget(ui->OrderPage);
     qDebug() << currentUser.name;
@@ -810,3 +822,87 @@ void MainWindow::on_Home_search_pushButton_clicked()
 
     loadCars(queryStr);
 }
+
+void MainWindow::on_Order_button_clicked()
+{
+    bool isEmpty = false;
+    QSqlQuery query;
+
+    for (QLineEdit* lineEdit : ui->stackedWidget->widget(1)->findChildren<QLineEdit*>()) {
+        if(lineEdit->text().isEmpty() || lineEdit->text() == "/") {
+            lineEdit->setStyleSheet("border: 1px solid red;");
+            if(lineEdit->inputMask().isEmpty()) {
+                lineEdit->setPlaceholderText("The field can't be blank");
+            }
+            isEmpty = true;
+        } else {
+            lineEdit->setStyleSheet("");
+        }
+    }
+
+    if(isEmpty) return;
+
+    if(isLogin) {
+        query.prepare("INSERT INTO \"Orders\" (\"user_id\", \"car_id\", \"start_date\", \"end_date\")"
+                      "VALUES(:user_id, :car_id, :start_date, :end_date)");
+        query.bindValue(":user_id", currentUser.id_user);
+        query.bindValue(":car_id", car_id);
+        query.bindValue(":start_date", start_date);
+        query.bindValue(":end_date", end_date);
+    } else {
+        QString name = ui->Order_name_lineEdit->text();
+        QString lastName = ui->Order_lastName_lineEdit->text();
+        QString email = ui->Order_email_lineEdit->text();
+        QString phone = ui->Order_phone_lineEdit->text();
+
+        query.prepare("INSERT INTO \"Orders\" (\"name\", \"surname\", \"email\", \"phone\", \"car_id\", \"start_date\", \"end_date\")"
+                      "VALUES(:name, :surname, :email, :phone, :car_id, :start_date, :end_date)");
+        query.bindValue(":name", name);
+        query.bindValue(":surname", lastName);
+        query.bindValue(":email", email);
+        query.bindValue(":phone", phone);
+        query.bindValue(":car_id", car_id);
+        query.bindValue(":start_date", start_date);
+        query.bindValue(":end_date", end_date);
+        qDebug() << start_date;
+        qDebug() << end_date;
+
+        if(query.exec()) {
+            qDebug() << "Nice";
+        }
+    }
+}
+
+
+
+void MainWindow::set_validator()
+{
+    //User order
+    QRegularExpression nameExpr ("^[A-Za-zА-Яа-яЁё]{2,15}$");
+    QRegularExpressionValidator *nameValidator = new QRegularExpressionValidator(nameExpr, this);
+    ui->Order_name_lineEdit->setValidator(nameValidator);
+
+    QRegularExpression surnameExpr ("^[A-Za-zА-Яа-яЁё]{2,15}$");
+    QRegularExpressionValidator *surnameValidator = new QRegularExpressionValidator(surnameExpr, this);
+    ui->Order_lastName_lineEdit->setValidator(surnameValidator);
+
+    QRegularExpression phoneExpr ("^\\+?[0-9]{7,16}$");
+    QRegularExpressionValidator *phoneValidator = new QRegularExpressionValidator(phoneExpr, this);
+    ui->Order_phone_lineEdit->setValidator(phoneValidator);
+
+    //User payment
+    QRegularExpression cardNameExpr ("^\\d{16}$");
+    QRegularExpressionValidator *cardNameValidator = new QRegularExpressionValidator(cardNameExpr, this);
+    ui->Order_cardNumber_lineEdit->setValidator(cardNameValidator);
+
+    QRegularExpression cardHolderExpr ("^[A-Za-zА-Яа-яЁё ]{5,30}$");
+    QRegularExpressionValidator *cardHolderValidator = new QRegularExpressionValidator(cardHolderExpr, this);
+    ui->Order_cardholderr_lineEdit->setValidator(cardHolderValidator);
+
+
+    ui->Order_date_lineEdit->setInputMask("00/00;_");
+
+    ui->Order_CVV_lineEdit->setInputMask("000;_");
+
+}
+

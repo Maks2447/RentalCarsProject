@@ -65,7 +65,7 @@ QVector<QPair<QVector<QString>, QPixmap>> Database::getCars(QString queryStr)
     QSqlQuery query;
 
     if(queryStr.isEmpty()) {
-        query.prepare("SELECT \"photo\", \"model\", \"specifications\", \"status\", \"fuel\", \"transmission\", \"price\", \"type\", \"passengers\" FROM \"Cars\"");
+        query.prepare("SELECT \"photo\", \"model\", \"specifications\", \"status\", \"fuel\", \"transmission\", \"price\", \"type\", \"passengers\", \"id_car\" FROM \"Cars\"");
     } else {
         query.prepare(queryStr);
     }
@@ -82,6 +82,7 @@ QVector<QPair<QVector<QString>, QPixmap>> Database::getCars(QString queryStr)
             car.append(query.value("price").toString());
             car.append(query.value("type").toString());
             car.append(query.value("passengers").toString());
+            car.append(query.value("id_car").toString());
 
             QPixmap pixmap;
             QByteArray photoData = query.value("photo").toByteArray();

@@ -4,7 +4,7 @@
 #include <QString>
 
 struct UserData {
-    int id;
+    int id_user;
     QString name;
     QString surname;
     QString email;
