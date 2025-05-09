@@ -631,7 +631,7 @@ background-color: orange;</string>
                 <x>0</x>
                 <y>0</y>
                 <width>253</width>
-                <height>1182</height>
+                <height>1349</height>
                </rect>
               </property>
               <property name="minimumSize">
@@ -1424,7 +1424,7 @@ QCheckBox::indicator:checked {
                 <x>0</x>
                 <y>0</y>
                 <width>767</width>
-                <height>1222</height>
+                <height>1422</height>
                </rect>
               </property>
               <property name="styleSheet">
@@ -1556,7 +1556,7 @@ QCheckBox::indicator:checked {
                    <x>0</x>
                    <y>0</y>
                    <width>706</width>
-                   <height>1149</height>
+                   <height>1327</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_17">
@@ -2071,7 +2071,7 @@ color: gray;</string>
                      </widget>
                     </item>
                     <item row="1" column="0">
-                     <widget class="QLabel" name="Order_rentalDaysl_label">
+                     <widget class="QLabel" name="Order_rentalDays_label">
                       <property name="styleSheet">
                        <string notr="true">font: 12pt;</string>
                       </property>
@@ -2733,7 +2733,7 @@ QTabWidget::pane {
 }</string>
                     </property>
                     <property name="currentIndex">
-                     <number>1</number>
+                     <number>0</number>
                     </property>
                     <widget class="QWidget" name="tab_2">
                      <property name="font">
@@ -2746,6 +2746,11 @@ QTabWidget::pane {
                      <attribute name="title">
                       <string>Active</string>
                      </attribute>
+                     <layout class="QHBoxLayout" name="horizontalLayout_2">
+                      <item>
+                       <layout class="QVBoxLayout" name="verticalLayout_12"/>
+                      </item>
+                     </layout>
                     </widget>
                     <widget class="QWidget" name="tab_3">
                      <attribute name="title">

@@ -75,9 +75,10 @@ MainWindow::MainWindow(QWidget *parent)
     //connect(ui->Home_searchTo_pushButton, &QPushButton::clicked, this, &MainWindow::on_Home_searchFrom_pushButton_clicked);
     connect(calendar, &QCalendarWidget::clicked, this, &MainWindow::calendarDataChoice);
     ui->Home_DayFrom_pushButton->setText(QDate::currentDate().toString("MMM dd"));
-    start_date = QDate::currentDate();
+    calendar_start_date = QDate::currentDate();
+    qDebug() << start_date;
     ui->Home_DayTo_pushButton->setText(QDate::currentDate().addDays(1).toString("MMM dd"));
-    end_date = QDate::currentDate();
+    calendar_end_date = QDate::currentDate().addDays(1);
 
     QMenu *timePick_startMenu = new QMenu;
     addRowsTime(*timePick_startMenu, ui->Home_timePick_start);
@@ -88,7 +89,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->Home_timePick_end->setMenu(timePick_endMenu);
 
     loadCars("");
-    setData(user);
+    setData(currentUser);
     applyStyleSheet();
     set_validator();
 
@@ -478,7 +479,7 @@ void MainWindow::setData(const UserData &user)
     QFontMetrics fm(ui->LoginButton->font());
     int textWidth = fm.horizontalAdvance(UserName);
 
-    loginButtonWidth = textWidth + 40;
+    loginButtonWidth = textWidth + 30;
 
     ui->LoginButton->setMinimumWidth(loginButtonWidth);
     ui->LoginButton->setMaximumWidth(loginButtonWidth);
@@ -557,6 +558,8 @@ void MainWindow::setData(const UserData &user)
         "   margin: 5px 0;"
         "}"
         );
+
+    create_widgetCard(ui->verticalLayout_12);
 }
 
 
@@ -569,14 +572,23 @@ void MainWindow::applyStyleSheet()
 
 void MainWindow::orderCarShow(const QVector<QString>& carData, const QPixmap &photoPixmap)
 {
+    int rental_days = start_date.daysTo(end_date);
+    ui->Order_rentalDays->setText(QString::number(rental_days) + " rental days");
+    ui->Order_numberOfDays_label->setText(QString::number(rental_days) + " days");
+
+    double price = carData[5].toInt() * rental_days;
     car_id = carData[8];
-    double price = carData[5].toInt() + 4.5;
+
+    ui->Order_pickup_data->setText(start_date.toString("ddd, MMM d, yyyy") + " | " + timePick_start);
+    ui->Order_return_data->setText(end_date.toString("ddd, MMM d, yyyy") + " | " + timePick_end);
 
     ui->stackedWidget->setCurrentWidget(ui->OrderPage);
     qDebug() << currentUser.name;
     if(isLogin) {
         ui->Order_name_lineEdit->setText(currentUser.name);
         ui->Order_lastName_lineEdit->setText(currentUser.surname);
+        ui->Order_email_lineEdit->setText(currentUser.email);
+        ui->Order_phone_lineEdit->setText(currentUser.phone);
     }
 
     QPixmap scaled = photoPixmap.scaled(ui->Order_photo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -589,6 +601,23 @@ void MainWindow::orderCarShow(const QVector<QString>& carData, const QPixmap &ph
     ui->Order_price_label->setText("$" + QString::number(price));
     ui->Order_top_totalPrice_label->setText("<span style='font-size: 20px;'> Total:</span>"
                                             "<span style='font-size: 28px;'>"" $" + QString::number(price) + "</span>");
+}
+
+void MainWindow::on_Home_search_pushButton_clicked()
+{
+    start_date = calendar_start_date;
+    end_date = calendar_end_date;
+    timePick_start = ui->Home_timePick_start->text();
+    timePick_end = ui->Home_timePick_end->text();
+    qDebug() << start_date << start_date <<  timePick_start << timePick_end;
+
+    QString queryStr = QString(
+                           "SELECT * FROM \"Cars\" WHERE \"id_car\" NOT IN ("
+                           "SELECT \"car_id\" FROM \"Orders\" "
+                           "WHERE NOT ('%1' > \"end_date\" OR '%2' < \"start_date\"))"
+                           ).arg(start_date.toString("yyyy-MM-dd"), end_date.toString("yyyy-MM-dd"));
+
+    loadCars(queryStr);
 }
 
 QPixmap MainWindow::roundedPixmap(const QPixmap &src, int radius)
@@ -779,14 +808,14 @@ void MainWindow::calendarDataChoice(const QDate &date)
 {
     if(ui->Home_DayFrom_pushButton->isChecked()) {
         ui->Home_DayFrom_pushButton->setText(date.toString("MMM dd"));
-        start_date = date;
         ui->Home_DayFrom_pushButton->setChecked(false);
+        calendar_start_date = date;
         on_Home_DayTo_pushButton_clicked();
 
     } else {
         ui->Home_DayTo_pushButton->setText(date.toString("MMM dd"));
         calendar->hide();
-        end_date = date;
+        calendar_end_date = date;
     }
 }
 
@@ -821,18 +850,6 @@ void MainWindow::on_Home_DayTo_pushButton_clicked()
     calendar->show();
     calendar->setMinimumWidth(500);
     calendar->setMinimumHeight(140);
-}
-
-void MainWindow::on_Home_search_pushButton_clicked()
-{
-
-    QString queryStr = QString(
-           "SELECT * FROM \"Cars\" WHERE \"id_car\" NOT IN ("
-           "SELECT \"car_id\" FROM \"Orders\" "
-           "WHERE NOT ('%1' > \"end_date\" OR '%2' < \"start_date\"))"
-           ).arg(start_date.toString("yyyy-MM-dd"), end_date.toString("yyyy-MM-dd"));
-
-    loadCars(queryStr);
 }
 
 void MainWindow::on_Order_button_clicked()
@@ -921,6 +938,29 @@ void MainWindow::set_validator()
     ui->Order_date_lineEdit->setInputMask("00/00;_");
 
     ui->Order_CVV_lineEdit->setInputMask("000;_");
+
+}
+
+void MainWindow::show_active_orders()
+{
+    currentUser.id_user;
+    QSqlQuery query;
+    query.prepare("SELECT Cars.photo, Cars.model, Cars.price "
+                  "FROM Users"
+                  "JOIN Orders ON Users.id_user = Orders.user_id"
+                  "JOIN Cars ON Orders.car_id = Cars.id_car");
+
+}
+
+void MainWindow::show_past_orders()
+{
+
+}
+
+void MainWindow::create_widgetCard(QVBoxLayout *layoutWidgetCard)
+{
+    QWidget *widgetCard = new QWidget(this);
+    layoutWidgetCard->addWidget(widgetCard);
 
 }
 

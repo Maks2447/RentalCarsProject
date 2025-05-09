@@ -60,6 +60,12 @@ private slots:
 
     void set_validator();
 
+    void show_active_orders();
+
+    void show_past_orders();
+
+    void create_widgetCard(QVBoxLayout *layoutWidgetCard);
+
 private:
     Ui::MainWindow *ui;
 
@@ -69,15 +75,20 @@ private:
     QWidget *container;
     QVBoxLayout *layout;
 
-    UserData user;
+    //UserData user;
     QMenu *menu;
 
     QCalendarWidget *calendar;
 
     bool isLogin;
 
+    QDate calendar_start_date;
+    QDate calendar_end_date;
     QDate start_date;
     QDate end_date;
+
+    QString timePick_start;
+    QString timePick_end;
 
     QString car_id;
 
