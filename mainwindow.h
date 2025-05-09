@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <registrdialog.h>
 #include <QCalendarWidget>
+#include <QFormLayout>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -64,7 +65,7 @@ private slots:
 
     void show_past_orders();
 
-    void create_widgetCard(QVBoxLayout *layoutWidgetCard);
+    void create_widgetCard(QVBoxLayout *layoutWidgetCard, QVector<QPair<QVector<QString>, QPixmap>> &carsList);
 
 private:
     Ui::MainWindow *ui;

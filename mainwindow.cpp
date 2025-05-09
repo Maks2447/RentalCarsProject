@@ -16,6 +16,7 @@
 #include <QWidgetAction>
 #include <QRegularExpressionValidator>
 #include <QTabBar>
+#include <QFormLayout>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -76,7 +77,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(calendar, &QCalendarWidget::clicked, this, &MainWindow::calendarDataChoice);
     ui->Home_DayFrom_pushButton->setText(QDate::currentDate().toString("MMM dd"));
     calendar_start_date = QDate::currentDate();
-    qDebug() << start_date;
     ui->Home_DayTo_pushButton->setText(QDate::currentDate().addDays(1).toString("MMM dd"));
     calendar_end_date = QDate::currentDate().addDays(1);
 
@@ -350,7 +350,6 @@ void MainWindow::loadCars(QString queryStr)
 
         QWidget *childWdg = new QWidget(container);
 
-
         QGridLayout * childLayout = new QGridLayout(childWdg);
         QSpacerItem *spacerTop = new QSpacerItem(0, 10);
         QSpacerItem *spacerLower = new QSpacerItem(0, 290);
@@ -506,9 +505,18 @@ void MainWindow::setData(const UserData &user)
 
     QTabBar *tabBar = ui->tabWidget_2->tabBar();
 
-    int index = tabBar->insertTab(0, "My bookings");
-    tabBar->setTabEnabled(index, false);
+    int index = ui->tabWidget_2->insertTab(0,new QWidget(), "My bookings");
+    ui->tabWidget_2->setTabEnabled(index, false);
+    ui->tabWidget_2->setCurrentIndex(1);
     tabBar->setStyleSheet("QTabBar::tab:first {background: transparent; color: white; font: 32px; margin-top: -5px; padding-top: -0px; padding-right: 15px; padding-left: -35px;}");
+
+    connect(tabBar, &QTabBar::currentChanged, this, [=](int index){
+        if (index == 1) {
+            ui->tabWidget_2->setCurrentIndex(1);
+        } else {
+            ui->tabWidget_2->setCurrentIndex(2);
+        }
+    });
 
     connect(account, &QAction::triggered, this, [=](){
         ui->stackedWidget->setCurrentWidget(ui->ProfilePage);
@@ -558,8 +566,7 @@ void MainWindow::setData(const UserData &user)
         "   margin: 5px 0;"
         "}"
         );
-
-    create_widgetCard(ui->verticalLayout_12);
+    show_active_orders();
 }
 
 
@@ -943,12 +950,46 @@ void MainWindow::set_validator()
 
 void MainWindow::show_active_orders()
 {
-    currentUser.id_user;
     QSqlQuery query;
-    query.prepare("SELECT Cars.photo, Cars.model, Cars.price "
-                  "FROM Users"
-                  "JOIN Orders ON Users.id_user = Orders.user_id"
-                  "JOIN Cars ON Orders.car_id = Cars.id_car");
+    query.prepare("SELECT \"Cars\".\"photo\", \"Cars\".\"model\", \"Cars\".\"price\" "
+                  "FROM \"Users\" "
+                  "JOIN \"Orders\" ON \"Users\".\"id_user\" = \"Orders\".\"user_id\" "
+                  "JOIN \"Cars\" ON \"Orders\".\"car_id\" = \"Cars\".\"id_car\" "
+                  "WHERE \"Users\".\"id_user\" = :id_user");
+    currentUser.id_user = 1;
+    query.bindValue(":id_user", currentUser.id_user);
+
+    QVector<QPair<QVector<QString>, QPixmap>> carsList;
+
+    if(query.exec()) {
+        while(query.next()) {
+            QVector<QString> car;
+
+            //car.append(query.value("Cars.photo").toString());
+            car.append(query.value("model").toString());
+            car.append(query.value("price").toString());
+            // car.append(query.value("Cars.photo").toString());
+            // car.append(query.value("Cars.photo").toString());
+
+            QPixmap pixmap;
+            QByteArray photoData = query.value("photo").toByteArray();
+
+            if(!photoData.isEmpty()) {
+                pixmap.loadFromData(photoData);
+            }
+
+            carsList.append(qMakePair(car, pixmap));
+
+            qDebug() << car;
+
+        }
+    } else {
+        qDebug() << "PROEBALI";
+    }
+
+    create_widgetCard(ui->verticalLayout_12, carsList);
+    create_widgetCard(ui->verticalLayout_12, carsList);
+    create_widgetCard(ui->verticalLayout_12, carsList);
 
 }
 
@@ -957,10 +998,24 @@ void MainWindow::show_past_orders()
 
 }
 
-void MainWindow::create_widgetCard(QVBoxLayout *layoutWidgetCard)
+void MainWindow::create_widgetCard(QVBoxLayout *layoutWidgetCard, QVector<QPair<QVector<QString>, QPixmap>> &carsList)
 {
-    QWidget *widgetCard = new QWidget(this);
-    layoutWidgetCard->addWidget(widgetCard);
+    for(int i = 0; i < carsList.size(); ++i) {
+        const QVector<QString> &car = carsList[i].first;
+        const QPixmap &photoPixmap = carsList[i].second;
 
+        QWidget *widgetCard = new QWidget(this);
+        widgetCard->setMaximumHeight(200);
+        widgetCard->setMaximumWidth(600);
+
+        layoutWidgetCard->addWidget(widgetCard);
+        widgetCard->setStyleSheet("background-color: white;");
+        QVBoxLayout *layoutCard = new QVBoxLayout();
+        widgetCard->setLayout(layoutCard);
+        QLabel * labelModel = new QLabel(car[0], widgetCard);
+        layoutCard->addWidget(labelModel);
+    }
+
+    layoutWidgetCard->addStretch();
 }
 
