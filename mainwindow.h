@@ -8,6 +8,7 @@
 #include <registrdialog.h>
 #include <QCalendarWidget>
 #include <QFormLayout>
+#include <QLabel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -43,7 +44,7 @@ private slots:
 
     void orderCarShow(const QVector<QString>& carData, const QPixmap &photoPixmap);
 
-    QPixmap roundedPixmap(const QPixmap &src, int radius);
+    QPixmap roundedPixmap(const QPixmap photoPixmap, int width, int height);
 
     void on_Home_DayFrom_pushButton_clicked();
 
@@ -65,7 +66,7 @@ private slots:
 
     void show_past_orders();
 
-    void create_widgetCard(QVBoxLayout *layoutWidgetCard, QVector<QPair<QVector<QString>, QPixmap>> &carsList);
+    void create_widgetCard(QVBoxLayout *layoutWidgetCard, QVector<QPair<QVector<QString>, QPixmap>> &carsList, bool isActive);
 
 private:
     Ui::MainWindow *ui;

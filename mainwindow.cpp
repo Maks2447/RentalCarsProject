@@ -17,6 +17,7 @@
 #include <QRegularExpressionValidator>
 #include <QTabBar>
 #include <QFormLayout>
+#include <QPainter>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -598,11 +599,12 @@ void MainWindow::orderCarShow(const QVector<QString>& carData, const QPixmap &ph
         ui->Order_phone_lineEdit->setText(currentUser.phone);
     }
 
-    QPixmap scaled = photoPixmap.scaled(ui->Order_photo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    QPixmap rounded = roundedPixmap(scaled, 10);
-
+    QPixmap rounded = (roundedPixmap(photoPixmap, 300, 300));
     ui->Order_photo->setPixmap(rounded);
+    ui->Order_photo->setMaximumWidth(110);
+    ui->Order_photo->setMaximumHeight(70);
     ui->Order_photo->setScaledContents(true);
+
 
     ui->Order_carModel->setText(carData[0]);
     ui->Order_price_label->setText("$" + QString::number(price));
@@ -627,21 +629,25 @@ void MainWindow::on_Home_search_pushButton_clicked()
     loadCars(queryStr);
 }
 
-QPixmap MainWindow::roundedPixmap(const QPixmap &src, int radius)
+QPixmap MainWindow::roundedPixmap(const QPixmap photoPixmap, int width, int height)
 {
-    QPixmap dest(src.size());
-    dest.fill(Qt::transparent);
 
-    QPainter painter(&dest);
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.setRenderHint(QPainter::SmoothPixmapTransform);
+    QPixmap image = photoPixmap.scaled(1800, 1200, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-    QPainterPath path;
-    path.addRoundedRect(QRectF(0, 0, src.width(), src.height()), radius, radius);
-    painter.setClipPath(path);
-    painter.drawPixmap(0, 0, src);
+    QPixmap clipImage(image.size());
+    clipImage.fill(Qt::transparent);
 
-    return dest;
+    QPainter painter(&clipImage);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+
+    QPainterPath clip;
+    clip.addRoundedRect(image.rect(), width, height);
+
+    painter.setClipPath(clip);
+    painter.drawPixmap(0, 0, image);
+    painter.end();
+
+    return clipImage;
 }
 
 void MainWindow::on_LoginButton_clicked()
@@ -951,13 +957,16 @@ void MainWindow::set_validator()
 void MainWindow::show_active_orders()
 {
     QSqlQuery query;
-    query.prepare("SELECT \"Cars\".\"photo\", \"Cars\".\"model\", \"Cars\".\"price\" "
+    QDate currentDate = QDate::currentDate();
+    query.prepare("SELECT \"Cars\".\"photo\", \"Cars\".\"model\", \"Cars\".\"price\", \"Orders\".\"start_date\", \"Orders\".\"end_date\"  "
                   "FROM \"Users\" "
                   "JOIN \"Orders\" ON \"Users\".\"id_user\" = \"Orders\".\"user_id\" "
                   "JOIN \"Cars\" ON \"Orders\".\"car_id\" = \"Cars\".\"id_car\" "
-                  "WHERE \"Users\".\"id_user\" = :id_user");
+                  "WHERE \"Users\".\"id_user\" = :id_user "
+                  "AND \"Orders\".\"start_date\" >= :currentDate");
     currentUser.id_user = 1;
     query.bindValue(":id_user", currentUser.id_user);
+    query.bindValue(":currentDate", currentDate);
 
     QVector<QPair<QVector<QString>, QPixmap>> carsList;
 
@@ -965,11 +974,10 @@ void MainWindow::show_active_orders()
         while(query.next()) {
             QVector<QString> car;
 
-            //car.append(query.value("Cars.photo").toString());
             car.append(query.value("model").toString());
             car.append(query.value("price").toString());
-            // car.append(query.value("Cars.photo").toString());
-            // car.append(query.value("Cars.photo").toString());
+            car.append(query.value("start_date").toDate().toString("dd MMM"));
+            car.append(query.value("end_date").toDate().toString("dd MMM"));
 
             QPixmap pixmap;
             QByteArray photoData = query.value("photo").toByteArray();
@@ -981,41 +989,90 @@ void MainWindow::show_active_orders()
             carsList.append(qMakePair(car, pixmap));
 
             qDebug() << car;
-
         }
-    } else {
-        qDebug() << "PROEBALI";
     }
-
-    create_widgetCard(ui->verticalLayout_12, carsList);
-    create_widgetCard(ui->verticalLayout_12, carsList);
-    create_widgetCard(ui->verticalLayout_12, carsList);
-
+    create_widgetCard(ui->verticalLayout_14, carsList, true);
 }
 
 void MainWindow::show_past_orders()
 {
+    QSqlQuery query;
+    QDate currentDate = QDate::currentDate();
+    query.prepare("SELECT \"Cars\".\"photo\", \"Cars\".\"model\", \"Cars\".\"price\", \"Orders\".\"start_date\", \"Orders\".\"end_date\"  "
+                  "FROM \"Users\" "
+                  "JOIN \"Orders\" ON \"Users\".\"id_user\" = \"Orders\".\"user_id\" "
+                  "JOIN \"Cars\" ON \"Orders\".\"car_id\" = \"Cars\".\"id_car\" "
+                  "WHERE \"Users\".\"id_user\" = :id_user "
+                  "AND \"Orders\".\"end_date\" < :currentDate");
+    currentUser.id_user = 1;
+    query.bindValue(":id_user", currentUser.id_user);
+    query.bindValue(":currentDate", currentDate);
 
+    QVector<QPair<QVector<QString>, QPixmap>> carsList;
+
+    if(query.exec()) {
+        while(query.next()) {
+            QVector<QString> car;
+
+            car.append(query.value("model").toString());
+            car.append(query.value("price").toString());
+            car.append(query.value("start_date").toDate().toString("dd MMM"));
+            car.append(query.value("end_date").toDate().toString("dd MMM"));
+
+            QPixmap pixmap;
+            QByteArray photoData = query.value("photo").toByteArray();
+
+            if(!photoData.isEmpty()) {
+                pixmap.loadFromData(photoData);
+            }
+            carsList.append(qMakePair(car, pixmap));
+        }
+    }
+    create_widgetCard(ui->verticalLayout_18, carsList, false);
 }
 
-void MainWindow::create_widgetCard(QVBoxLayout *layoutWidgetCard, QVector<QPair<QVector<QString>, QPixmap>> &carsList)
+
+void MainWindow::create_widgetCard(QVBoxLayout *layoutWidgetCard, QVector<QPair<QVector<QString>, QPixmap>> &carsList, bool isActive)
 {
     for(int i = 0; i < carsList.size(); ++i) {
         const QVector<QString> &car = carsList[i].first;
         const QPixmap &photoPixmap = carsList[i].second;
 
         QWidget *widgetCard = new QWidget(this);
-        widgetCard->setMaximumHeight(200);
-        widgetCard->setMaximumWidth(600);
-
+        widgetCard->setFixedSize(650, 140);
         layoutWidgetCard->addWidget(widgetCard);
-        widgetCard->setStyleSheet("background-color: white;");
-        QVBoxLayout *layoutCard = new QVBoxLayout();
-        widgetCard->setLayout(layoutCard);
-        QLabel * labelModel = new QLabel(car[0], widgetCard);
-        layoutCard->addWidget(labelModel);
-    }
 
+        QGridLayout *layoutCard = new QGridLayout(widgetCard);
+        widgetCard->setLayout(layoutCard);
+        layoutCard->setContentsMargins(20,20,0,20);
+        layoutCard->setHorizontalSpacing(30);
+
+        QLabel *photo = new QLabel(widgetCard);
+
+        photo->setPixmap(roundedPixmap(photoPixmap, 300, 210));
+        photo->setFixedSize(150,100);
+        photo->setScaledContents(true);
+
+        QLabel *model = new QLabel(car[0], widgetCard);
+        model->setStyleSheet("font-weight: 600; font-size: 18px; padding-bottom: 5px;");
+        QLabel *dateOfBooking = new QLabel(car[2] + " - " + car[3] + " $" + car[1], widgetCard);
+        dateOfBooking->setStyleSheet("padding-bottom: 8px;");
+        QLabel *statusOfBooking = new QLabel(widgetCard);
+
+        if (isActive == true) {
+            statusOfBooking->setText("Active");
+        } else {
+            statusOfBooking->setText("Expired");
+        }
+
+        layoutCard->addWidget(photo, 0,0, 3, 1);
+        layoutCard->addWidget(model, 0,1);
+        layoutCard->addWidget(dateOfBooking, 1,1);
+        layoutCard->addWidget(statusOfBooking, 2,1);
+
+        widgetCard->setObjectName("widgetCardBookings");
+        widgetCard->setStyleSheet("background-color: #1a1a1a;");
+    }
     layoutWidgetCard->addStretch();
 }
 
