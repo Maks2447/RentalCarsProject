@@ -69,7 +69,6 @@ MainWindow::MainWindow(QWidget *parent)
     oldStyle = ui->Order_age_checkBox->styleSheet();
     calendar->setObjectName("calendar");
 
-
     connect(ui->backToHomePage, &QPushButton::clicked, this, [=]() {
         ui->stackedWidget->setCurrentIndex(0);
     });
@@ -472,6 +471,10 @@ void MainWindow::setData(const UserData &user)
     currentUser = user;
     isLogin = true;
 
+    currentUser.phone = "+48 790504452";
+    currentUser.name = "Maksym";
+    currentUser.surname = "Holoviznyi";
+
     double loginButtonWidth;
 
     QString UserName = currentUser.name + " " +currentUser.surname;
@@ -486,7 +489,7 @@ void MainWindow::setData(const UserData &user)
 
     ui->LoginButton->setText(UserName);
 
-    ui->label_2->installEventFilter(this);
+    ui->logoName_label->installEventFilter(this);
 
     QMenu *menu = new QMenu(this);
 
@@ -501,27 +504,27 @@ void MainWindow::setData(const UserData &user)
 
     connect(bookings, &QAction::triggered, this, [=](){
         ui->stackedWidget->setCurrentWidget(ui->ProfilePage);
-        ui->tabWidget->setCurrentWidget(ui->Profile_Booking_page);
+        ui->ProfilePage_mainTabWidget->setCurrentWidget(ui->Profile_Booking_Tab);
     });
 
-    QTabBar *tabBar = ui->tabWidget_2->tabBar();
+    QTabBar *tabBar = ui->Booking_innerTab->tabBar();
 
-    int index = ui->tabWidget_2->insertTab(0,new QWidget(), "My bookings");
-    ui->tabWidget_2->setTabEnabled(index, false);
-    ui->tabWidget_2->setCurrentIndex(1);
+    int index = ui->Booking_innerTab->insertTab(0,new QWidget(), "My bookings");
+    ui->Booking_innerTab->setTabEnabled(index, false);
+    ui->Booking_innerTab->setCurrentIndex(1);
     tabBar->setStyleSheet("QTabBar::tab:first {background: transparent; color: white; font: 32px; margin-top: -5px; padding-top: -0px; padding-right: 15px; padding-left: -35px;}");
 
     connect(tabBar, &QTabBar::currentChanged, this, [=](int index){
         if (index == 1) {
-            ui->tabWidget_2->setCurrentIndex(1);
+            ui->Booking_innerTab->setCurrentIndex(1);
         } else {
-            ui->tabWidget_2->setCurrentIndex(2);
+            ui->Booking_innerTab->setCurrentIndex(2);
         }
     });
 
     connect(account, &QAction::triggered, this, [=](){
         ui->stackedWidget->setCurrentWidget(ui->ProfilePage);
-        ui->tabWidget->setCurrentWidget(ui->Profile_account_page);
+        ui->ProfilePage_mainTabWidget->setCurrentWidget(ui->Profile_account_Tab);
     });
 
     connect(logout, &QAction::triggered, this, [=](){
@@ -567,7 +570,12 @@ void MainWindow::setData(const UserData &user)
         "   margin: 5px 0;"
         "}"
         );
+
+
+
     show_active_orders();
+
+    creationAccountTab();
 }
 
 
@@ -840,7 +848,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         return true;
     }
 
-    if (watched == ui->label_2 && event->type() == QEvent::MouseButtonPress) {
+    if (watched == ui->logoName_label && event->type() == QEvent::MouseButtonPress) {
         ui->stackedWidget->setCurrentWidget(ui->HomePage);
         return true;
     }
@@ -1074,5 +1082,50 @@ void MainWindow::create_widgetCard(QVBoxLayout *layoutWidgetCard, QVector<QPair<
         widgetCard->setStyleSheet("background-color: #1a1a1a;");
     }
     layoutWidgetCard->addStretch();
+}
+
+void MainWindow::creationAccountTab()
+{
+    ui->Account_name_EditLine->setText(currentUser.name);
+    ui->Account_LastName_EditLine->setText(currentUser.surname);
+    ui->Account_phone_EditLine->setText(currentUser.phone);
+
+    QPushButton *saveChangesButton_personalInformation = new QPushButton(ui->PersonalInformation_tab);
+    saveChangesButton_personalInformation->move(0,250);
+    //saveChangesButton_personalInformation->setCursor(Qt::ForbiddenCursor);
+
+    QPushButton *saveChangesButton_email = new QPushButton(ui->Email_tab);
+    saveChangesButton_email->move(0,200);
+
+    QPushButton *saveChangesButton_changePassword = new QPushButton(ui->ChangePassword_tab);
+    saveChangesButton_changePassword->move(0,200);
+
+    for (QPushButton* button : ui->Account_innerTab->findChildren<QPushButton*>()) {
+        button->setEnabled(false);
+        button->setFixedSize(210,60);
+        button->setText("Save");
+        button->setCursor(Qt::ForbiddenCursor);
+    }
+
+    connect(saveChangesButton_personalInformation, &QPushButton::clicked, this, &MainWindow::saveChangesButton);
+    connect(saveChangesButton_email, &QPushButton::clicked, this, &MainWindow::saveChangesButton);
+    connect(saveChangesButton_changePassword, &QPushButton::clicked, this, &MainWindow::saveChangesButton);
+
+    // auto checkChanges = [=]() mutable {
+    //     bool changed = (nameEdit->text() != originalName ||
+    //                     emailEdit->text() != originalEmail);
+    //     saveButton->setEnabled(changed);
+    // };
+}
+
+void MainWindow::saveChangesButton()
+{
+    if(ui->Account_innerTab->currentIndex() == 0) {
+        qDebug() << "tab 0";
+    } else if(ui->Account_innerTab->currentIndex() == 1) {
+        qDebug() << "tab 1";
+    } else if(ui->Account_innerTab->currentIndex() == 2) {
+        qDebug() << "tab 2";
+    }
 }
 

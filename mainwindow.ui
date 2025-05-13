@@ -2616,9 +2616,9 @@ padding-left: 7px;
          <number>0</number>
         </property>
         <item row="1" column="0">
-         <widget class="QWidget" name="widget_3" native="true">
+         <widget class="QWidget" name="ProfilePage_mainWidget" native="true">
           <property name="styleSheet">
-           <string notr="true">#widget_3 {
+           <string notr="true">#ProfilePage_mainWidget {
 	background-color: #121212;
 }</string>
           </property>
@@ -2636,7 +2636,7 @@ padding-left: 7px;
             <number>0</number>
            </property>
            <item>
-            <widget class="QTabWidget" name="tabWidget">
+            <widget class="QTabWidget" name="ProfilePage_mainTabWidget">
              <property name="styleSheet">
               <string notr="true">QTabBar {
     background-color: #212121;
@@ -2679,9 +2679,9 @@ QTabWidget::pane {
 }</string>
              </property>
              <property name="currentIndex">
-              <number>0</number>
+              <number>1</number>
              </property>
-             <widget class="QWidget" name="Profile_Booking_page">
+             <widget class="QWidget" name="Profile_Booking_Tab">
               <property name="styleSheet">
                <string notr="true">background-color: #212121;
 </string>
@@ -2697,10 +2697,10 @@ QTabWidget::pane {
                 <number>11</number>
                </property>
                <item>
-                <widget class="QWidget" name="widget_6" native="true">
+                <widget class="QWidget" name="bookingWidget" native="true">
                  <layout class="QHBoxLayout" name="horizontalLayout">
                   <property name="leftMargin">
-                   <number>0</number>
+                   <number>35</number>
                   </property>
                   <property name="topMargin">
                    <number>30</number>
@@ -2712,7 +2712,7 @@ QTabWidget::pane {
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QTabWidget" name="tabWidget_2">
+                   <widget class="QTabWidget" name="Booking_innerTab">
                     <property name="font">
                      <font>
                       <pointsize>9</pointsize>
@@ -2734,12 +2734,13 @@ QTabBar::tab:selected {
 QTabWidget::pane {
 	background-color: #212121;
     border-top: 1px solid gray; 
+	margin-left: 20px;
 }</string>
                     </property>
                     <property name="currentIndex">
                      <number>0</number>
                     </property>
-                    <widget class="QWidget" name="tab_2">
+                    <widget class="QWidget" name="ActiveOrders_Tab">
                      <property name="font">
                       <font>
                        <pointsize>15</pointsize>
@@ -2751,6 +2752,9 @@ QTabWidget::pane {
                       <string>Active</string>
                      </attribute>
                      <layout class="QVBoxLayout" name="verticalLayout_12">
+                      <property name="leftMargin">
+                       <number>11</number>
+                      </property>
                       <item>
                        <widget class="QScrollArea" name="scrollArea_3">
                         <property name="styleSheet">
@@ -2772,7 +2776,7 @@ QTabWidget::pane {
                           <rect>
                            <x>0</x>
                            <y>0</y>
-                           <width>1117</width>
+                           <width>1062</width>
                            <height>597</height>
                           </rect>
                          </property>
@@ -2798,7 +2802,7 @@ QTabWidget::pane {
                       </item>
                      </layout>
                     </widget>
-                    <widget class="QWidget" name="tab_3">
+                    <widget class="QWidget" name="PastOrders_Tab">
                      <attribute name="title">
                       <string>Past orders</string>
                      </attribute>
@@ -2818,7 +2822,7 @@ QTabWidget::pane {
                           <rect>
                            <x>0</x>
                            <y>0</y>
-                           <width>1117</width>
+                           <width>1062</width>
                            <height>597</height>
                           </rect>
                          </property>
@@ -2839,7 +2843,7 @@ QTabWidget::pane {
                </item>
               </layout>
              </widget>
-             <widget class="QWidget" name="Profile_account_page">
+             <widget class="QWidget" name="Profile_account_Tab">
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
@@ -2852,35 +2856,196 @@ QTabWidget::pane {
               <attribute name="title">
                <string>Account</string>
               </attribute>
-              <widget class="QPushButton" name="pushButton_2">
-               <property name="geometry">
-                <rect>
-                 <x>160</x>
-                 <y>180</y>
-                 <width>83</width>
-                 <height>29</height>
-                </rect>
+              <layout class="QVBoxLayout" name="verticalLayout_19" stretch="1,8">
+               <property name="spacing">
+                <number>5</number>
                </property>
-               <property name="text">
-                <string>PushButton</string>
+               <property name="leftMargin">
+                <number>71</number>
                </property>
-              </widget>
-              <widget class="QToolButton" name="toolButton">
-               <property name="geometry">
-                <rect>
-                 <x>490</x>
-                 <y>180</y>
-                 <width>211</width>
-                 <height>51</height>
-                </rect>
+               <property name="topMargin">
+                <number>15</number>
                </property>
-               <property name="text">
-                <string>...</string>
+               <property name="rightMargin">
+                <number>0</number>
                </property>
-               <property name="popupMode">
-                <enum>QToolButton::ToolButtonPopupMode::MenuButtonPopup</enum>
+               <property name="bottomMargin">
+                <number>0</number>
                </property>
-              </widget>
+               <item>
+                <widget class="QLabel" name="Account_label">
+                 <property name="font">
+                  <font>
+                   <pointsize>22</pointsize>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Account</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QTabWidget" name="Account_innerTab">
+                 <property name="styleSheet">
+                  <string notr="true">QTabBar::tab:first {
+	margin-left: -9px;    
+}
+QTabWidget::pane {
+    background-color: blue;
+	border-top: none;
+}
+QTabBar::tab {
+    background-color: #212121;
+    color: white;
+    border: none;
+}
+QTabBar {
+    font-size: 18px; 
+    border: none;
+}
+QTabBar::tab:selected {
+    border-bottom: 2px solid orange;
+}
+
+QLineEdit {
+  	height: 43px;
+  	border: 1px solid white;
+ 	border-radius: 9px; 
+	font: 13pt;
+	padding-left: 10px;
+}
+
+QPushButton {
+        background-color: #ff7b00;
+        color: white;
+        border: none;
+        font-size: 26px;
+        border-radius: 6px;
+}
+QPushButton:hover {
+        background-color: #de6b00;
+}
+QPushButton:pressed {
+        background-color: #c45f00;
+}
+QPushButton:disabled {
+        background-color: #e37d34;
+        color: #d6d6d6;
+}</string>
+                 </property>
+                 <property name="currentIndex">
+                  <number>2</number>
+                 </property>
+                 <widget class="QWidget" name="PersonalInformation_tab">
+                  <attribute name="title">
+                   <string>Personal information</string>
+                  </attribute>
+                  <widget class="QLineEdit" name="Account_name_EditLine">
+                   <property name="geometry">
+                    <rect>
+                     <x>0</x>
+                     <y>59</y>
+                     <width>151</width>
+                     <height>40</height>
+                    </rect>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>13</pointsize>
+                     <italic>false</italic>
+                     <bold>false</bold>
+                    </font>
+                   </property>
+                  </widget>
+                  <widget class="QLabel" name="Account_name_label">
+                   <property name="geometry">
+                    <rect>
+                     <x>0</x>
+                     <y>35</y>
+                     <width>171</width>
+                     <height>21</height>
+                    </rect>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Name</string>
+                   </property>
+                  </widget>
+                  <widget class="QLabel" name="Account_phone_label">
+                   <property name="geometry">
+                    <rect>
+                     <x>0</x>
+                     <y>130</y>
+                     <width>161</width>
+                     <height>21</height>
+                    </rect>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Phone number</string>
+                   </property>
+                  </widget>
+                  <widget class="QLineEdit" name="Account_phone_EditLine">
+                   <property name="geometry">
+                    <rect>
+                     <x>0</x>
+                     <y>154</y>
+                     <width>341</width>
+                     <height>40</height>
+                    </rect>
+                   </property>
+                  </widget>
+                  <widget class="QLineEdit" name="Account_LastName_EditLine">
+                   <property name="geometry">
+                    <rect>
+                     <x>180</x>
+                     <y>59</y>
+                     <width>161</width>
+                     <height>40</height>
+                    </rect>
+                   </property>
+                  </widget>
+                  <widget class="QLabel" name="Account_LastName_label">
+                   <property name="geometry">
+                    <rect>
+                     <x>180</x>
+                     <y>35</y>
+                     <width>111</width>
+                     <height>20</height>
+                    </rect>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Last name</string>
+                   </property>
+                  </widget>
+                 </widget>
+                 <widget class="QWidget" name="Email_tab">
+                  <attribute name="title">
+                   <string>Email</string>
+                  </attribute>
+                 </widget>
+                 <widget class="QWidget" name="ChangePassword_tab">
+                  <attribute name="title">
+                   <string>Change password</string>
+                  </attribute>
+                 </widget>
+                </widget>
+               </item>
+              </layout>
              </widget>
              <widget class="QWidget" name="tab">
               <property name="minimumSize">
@@ -2908,14 +3073,14 @@ QTabWidget::pane {
          </widget>
         </item>
         <item row="2" column="0">
-         <widget class="QWidget" name="widget_5" native="true">
+         <widget class="QWidget" name="ProfilePage_bottomWidget" native="true">
           <property name="styleSheet">
            <string notr="true">background-color: #212121;</string>
           </property>
          </widget>
         </item>
         <item row="0" column="0">
-         <widget class="QWidget" name="widget_2" native="true">
+         <widget class="QWidget" name="ProfilePage_topWidget" native="true">
           <property name="styleSheet">
            <string notr="true">background-color: #121212;</string>
           </property>
@@ -2927,7 +3092,7 @@ QTabWidget::pane {
             <number>11</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_2">
+            <widget class="QLabel" name="logoName_label">
              <property name="maximumSize">
               <size>
                <width>16777215</width>
@@ -2965,7 +3130,7 @@ QTabWidget::pane {
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="label_3">
+            <widget class="QLabel" name="logout_label">
              <property name="text">
               <string>123</string>
              </property>

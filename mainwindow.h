@@ -68,6 +68,10 @@ private slots:
 
     void create_widgetCard(QVBoxLayout *layoutWidgetCard, QVector<QPair<QVector<QString>, QPixmap>> &carsList, bool isActive);
 
+    void creationAccountTab();
+
+    void saveChangesButton();
+
 private:
     Ui::MainWindow *ui;
 
