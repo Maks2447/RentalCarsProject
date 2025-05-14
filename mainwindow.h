@@ -68,9 +68,11 @@ private slots:
 
     void create_widgetCard(QVBoxLayout *layoutWidgetCard, QVector<QPair<QVector<QString>, QPixmap>> &carsList, bool isActive);
 
-    void creationAccountTab();
+    void creationInnerTabs();
 
     void saveChangesButton();
+
+    void refreshData();
 
 private:
     Ui::MainWindow *ui;
@@ -99,5 +101,9 @@ private:
     QString car_id;
 
     QString oldStyle;
+
+    QPushButton *saveChangesButton_personalInformation = nullptr;
+    QPushButton *saveChangesButton_email = nullptr;
+    QPushButton *saveChangesButton_changePassword = nullptr;
 };
 #endif // MAINWINDOW_H

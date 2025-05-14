@@ -127,6 +127,7 @@ void RegistrDialog::createAccount()
             currentUser.surname = query.value("surname").toString();
             currentUser.email = query.value("email").toString();
             currentUser.phone = query.value("phone").toString();
+            currentUser.password = query.value("phone").toString();
 
             this->close();
         }

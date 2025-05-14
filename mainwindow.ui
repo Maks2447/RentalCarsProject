@@ -1422,8 +1422,8 @@ QCheckBox::indicator:checked {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>767</width>
-                <height>872</height>
+                <width>22</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="styleSheet">
@@ -1554,7 +1554,7 @@ QCheckBox::indicator:checked {
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>706</width>
+                   <width>570</width>
                    <height>1114</height>
                   </rect>
                  </property>
@@ -2822,8 +2822,8 @@ QTabWidget::pane {
                           <rect>
                            <x>0</x>
                            <y>0</y>
-                           <width>1062</width>
-                           <height>597</height>
+                           <width>61</width>
+                           <height>36</height>
                           </rect>
                          </property>
                          <layout class="QVBoxLayout" name="verticalLayout_18">
@@ -2864,7 +2864,7 @@ QTabWidget::pane {
                 <number>71</number>
                </property>
                <property name="topMargin">
-                <number>15</number>
+                <number>40</number>
                </property>
                <property name="rightMargin">
                 <number>0</number>
@@ -2935,7 +2935,7 @@ QPushButton:disabled {
 }</string>
                  </property>
                  <property name="currentIndex">
-                  <number>2</number>
+                  <number>0</number>
                  </property>
                  <widget class="QWidget" name="PersonalInformation_tab">
                   <attribute name="title">
@@ -3037,11 +3037,95 @@ QPushButton:disabled {
                   <attribute name="title">
                    <string>Email</string>
                   </attribute>
+                  <widget class="QLabel" name="Account_email_label">
+                   <property name="geometry">
+                    <rect>
+                     <x>0</x>
+                     <y>35</y>
+                     <width>63</width>
+                     <height>20</height>
+                    </rect>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Email</string>
+                   </property>
+                  </widget>
+                  <widget class="QLineEdit" name="Account_email_EditLine">
+                   <property name="geometry">
+                    <rect>
+                     <x>0</x>
+                     <y>59</y>
+                     <width>291</width>
+                     <height>40</height>
+                    </rect>
+                   </property>
+                  </widget>
                  </widget>
                  <widget class="QWidget" name="ChangePassword_tab">
                   <attribute name="title">
                    <string>Change password</string>
                   </attribute>
+                  <widget class="QLineEdit" name="Account_currentPassword_EditLine">
+                   <property name="geometry">
+                    <rect>
+                     <x>0</x>
+                     <y>59</y>
+                     <width>231</width>
+                     <height>40</height>
+                    </rect>
+                   </property>
+                  </widget>
+                  <widget class="QLineEdit" name="Account_newPassword_EditLine_2">
+                   <property name="geometry">
+                    <rect>
+                     <x>0</x>
+                     <y>154</y>
+                     <width>221</width>
+                     <height>40</height>
+                    </rect>
+                   </property>
+                  </widget>
+                  <widget class="QLabel" name="Account_currentPassword_label">
+                   <property name="geometry">
+                    <rect>
+                     <x>0</x>
+                     <y>35</y>
+                     <width>171</width>
+                     <height>20</height>
+                    </rect>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Current password</string>
+                   </property>
+                  </widget>
+                  <widget class="QLabel" name="Account_newPassword_label">
+                   <property name="geometry">
+                    <rect>
+                     <x>0</x>
+                     <y>130</y>
+                     <width>141</width>
+                     <height>20</height>
+                    </rect>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>New password</string>
+                   </property>
+                  </widget>
                  </widget>
                 </widget>
                </item>

@@ -474,6 +474,7 @@ void MainWindow::setData(const UserData &user)
     currentUser.phone = "+48 790504452";
     currentUser.name = "Maksym";
     currentUser.surname = "Holoviznyi";
+    currentUser.email = "golovisnyimaksim@gmail.com";
 
     double loginButtonWidth;
 
@@ -574,8 +575,9 @@ void MainWindow::setData(const UserData &user)
 
 
     show_active_orders();
+    show_past_orders();
 
-    creationAccountTab();
+    creationInnerTabs();
 }
 
 
@@ -853,7 +855,13 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         return true;
     }
 
-    return QMainWindow::eventFilter(watched, event);
+    if (QLineEdit *lineEdit = qobject_cast<QLineEdit*>(watched)) {
+        if (event->type() == QEvent::FocusIn) {
+            lineEdit->setStyleSheet("color: orange;");
+        } else if (event->type() == QEvent::FocusOut) {
+            lineEdit->setStyleSheet("color: white;");  // Вернуть к обычному
+        }
+    }
 }
 
 void MainWindow::on_Home_DayTo_pushButton_clicked()
@@ -1084,48 +1092,113 @@ void MainWindow::create_widgetCard(QVBoxLayout *layoutWidgetCard, QVector<QPair<
     layoutWidgetCard->addStretch();
 }
 
-void MainWindow::creationAccountTab()
+void MainWindow::creationInnerTabs()
 {
+    //refreshData();
     ui->Account_name_EditLine->setText(currentUser.name);
     ui->Account_LastName_EditLine->setText(currentUser.surname);
     ui->Account_phone_EditLine->setText(currentUser.phone);
+    ui->Account_email_EditLine->setText(currentUser.email);
 
-    QPushButton *saveChangesButton_personalInformation = new QPushButton(ui->PersonalInformation_tab);
-    saveChangesButton_personalInformation->move(0,250);
-    //saveChangesButton_personalInformation->setCursor(Qt::ForbiddenCursor);
+    saveChangesButton_personalInformation = new QPushButton(ui->PersonalInformation_tab);
+    saveChangesButton_personalInformation->move(0,240);
 
-    QPushButton *saveChangesButton_email = new QPushButton(ui->Email_tab);
-    saveChangesButton_email->move(0,200);
+    saveChangesButton_email = new QPushButton(ui->Email_tab);
+    saveChangesButton_email->move(0,160);
 
-    QPushButton *saveChangesButton_changePassword = new QPushButton(ui->ChangePassword_tab);
-    saveChangesButton_changePassword->move(0,200);
+    saveChangesButton_changePassword = new QPushButton(ui->ChangePassword_tab);
+    saveChangesButton_changePassword->move(0,240);
 
     for (QPushButton* button : ui->Account_innerTab->findChildren<QPushButton*>()) {
         button->setEnabled(false);
         button->setFixedSize(210,60);
         button->setText("Save");
-        button->setCursor(Qt::ForbiddenCursor);
     }
 
     connect(saveChangesButton_personalInformation, &QPushButton::clicked, this, &MainWindow::saveChangesButton);
     connect(saveChangesButton_email, &QPushButton::clicked, this, &MainWindow::saveChangesButton);
     connect(saveChangesButton_changePassword, &QPushButton::clicked, this, &MainWindow::saveChangesButton);
 
-    // auto checkChanges = [=]() mutable {
-    //     bool changed = (nameEdit->text() != originalName ||
-    //                     emailEdit->text() != originalEmail);
-    //     saveButton->setEnabled(changed);
-    // };
+    auto checkChangesInformation = [this]() {
+        bool changed = (ui->Account_name_EditLine->text() != currentUser.name ||
+                        ui->Account_LastName_EditLine->text() != currentUser.surname ||
+                        ui->Account_phone_EditLine->text() != currentUser.phone);
+        saveChangesButton_personalInformation->setEnabled(changed);
+    };
+
+    auto checkChangesEmailPassword = [this]() {
+        if(ui->Account_email_EditLine->text() != currentUser.email) {
+            saveChangesButton_email->setEnabled(true);
+        } else if(ui->Account_currentPassword_EditLine->text() != currentUser.password) {
+            saveChangesButton_changePassword->setEnabled(true);
+        }
+    };
+
+    connect(ui->Account_name_EditLine, &QLineEdit::textChanged, this, checkChangesInformation);
+    connect(ui->Account_LastName_EditLine, &QLineEdit::textChanged, this, checkChangesInformation);
+    connect(ui->Account_phone_EditLine, &QLineEdit::textChanged, this, checkChangesInformation);
+    connect(ui->Account_email_EditLine, &QLineEdit::textChanged, this, checkChangesEmailPassword);
+    connect(ui->Account_currentPassword_EditLine, &QLineEdit::textChanged, this, checkChangesEmailPassword);
+
+    for(QLineEdit *editLine : ui->Account_innerTab->findChildren<QLineEdit*>()) {
+        editLine->installEventFilter(this);
+    }
+
 }
 
 void MainWindow::saveChangesButton()
 {
+    QPushButton *button = qobject_cast<QPushButton*>(sender());
+    QSqlQuery query;
+
     if(ui->Account_innerTab->currentIndex() == 0) {
-        qDebug() << "tab 0";
+        query.prepare("UPDATE \"Users\" "
+                      "SET \"name\" = :name, \"surname\" = :surname, \"phone\" = :phone "
+                      "WHERE \"id_user\" = 1");
+
+        query.bindValue(":name", ui->Account_name_EditLine->text());
+        query.bindValue(":surname", ui->Account_LastName_EditLine->text());
+        query.bindValue(":phone", ui->Account_phone_EditLine->text());
+        query.bindValue(":id_user", currentUser.id_user);
+
+        QLabel *isSuccessful = new QLabel(ui->PersonalInformation_tab);
+        if(query.exec()) {
+            isSuccessful->setText("Your data was successfully added");
+        } else {
+            isSuccessful->setText("Your data wasn't successfully added");
+        }
+        isSuccessful->move(0,200);
+        isSuccessful->show();
+        button->setEnabled(false);
+
+        refreshData();
     } else if(ui->Account_innerTab->currentIndex() == 1) {
         qDebug() << "tab 1";
     } else if(ui->Account_innerTab->currentIndex() == 2) {
         qDebug() << "tab 2";
+    }
+}
+
+void MainWindow::refreshData()
+{
+    currentUser.id_user = 1;
+    QSqlQuery query;
+    query.prepare("SELECT \"name\", \"surname\", \"phone\", \"email\", \"password\" "
+                  "FROM \"Users\" "
+                  "WHERE \"id_user\" = :id_user");
+    query.bindValue(":id_user", currentUser.id_user);
+
+    if (query.exec()) {
+        if (query.next()) {
+            currentUser.name = query.value("name").toString();
+            currentUser.email = query.value("email").toString();
+            currentUser.surname = query.value("surname").toString();
+            currentUser.phone = query.value("phone").toString();
+            currentUser.password = query.value("password").toString();
+            qDebug() << "Данные пользователя загружены";
+        }
+    } else {
+        qDebug() << "Ошибка запроса: ";
     }
 }
 
