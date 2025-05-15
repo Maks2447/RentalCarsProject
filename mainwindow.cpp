@@ -142,6 +142,17 @@ MainWindow::MainWindow(QWidget *parent)
     for(QCheckBox *checkBox : this->findChildren<QCheckBox*>()) {
         checkBox->setCursor(Qt::PointingHandCursor);
     }
+
+    connect(ui->Account_innerTab, &QTabWidget::currentChanged, this, &MainWindow::changeCurrentTab);
+
+    on_Home_search_pushButton_clicked();
+
+    int index = ui->ProfilePage_mainTabWidget->indexOf(ui->tab);
+    if (index != -1) {
+        ui->ProfilePage_mainTabWidget->removeTab(index);
+    }
+    ui->ProfilePage_mainTabWidget->insertTab(index, ui->tab, "My Tab");
+
 }
 
 MainWindow::~MainWindow()
@@ -573,11 +584,12 @@ void MainWindow::setData(const UserData &user)
         );
 
 
-
     show_active_orders();
     show_past_orders();
 
     creationInnerTabs();
+
+
 }
 
 
@@ -900,6 +912,7 @@ void MainWindow::on_Order_button_clicked()
 
     if(!ui->Order_age_checkBox->isChecked()) {
         ui->Order_age_checkBox->setStyleSheet(oldStyle + "QCheckBox {color: red;}");
+        return;
     } else {
         ui->Order_age_checkBox->setStyleSheet(oldStyle);
     }
@@ -913,6 +926,8 @@ void MainWindow::on_Order_button_clicked()
         query.bindValue(":car_id", car_id);
         query.bindValue(":start_date", start_date);
         query.bindValue(":end_date", end_date);
+        query.exec();
+
     } else {
         QString name = ui->Order_name_lineEdit->text();
         QString lastName = ui->Order_lastName_lineEdit->text();
@@ -931,10 +946,10 @@ void MainWindow::on_Order_button_clicked()
         qDebug() << start_date;
         qDebug() << end_date;
 
-        if(query.exec()) {
-            qDebug() << "Nice";
-        }
+        query.exec();
     }
+    show_active_orders();
+    ui->stackedWidget->setCurrentWidget(ui->HomePage);
 }
 
 
@@ -1050,6 +1065,13 @@ void MainWindow::show_past_orders()
 
 void MainWindow::create_widgetCard(QVBoxLayout *layoutWidgetCard, QVector<QPair<QVector<QString>, QPixmap>> &carsList, bool isActive)
 {
+    while(QLayoutItem *item = layoutWidgetCard->takeAt(0)) {
+        if(QWidget *widget = item->widget()) {
+            widget->deleteLater();
+        }
+        delete item;
+    }
+
     for(int i = 0; i < carsList.size(); ++i) {
         const QVector<QString> &car = carsList[i].first;
         const QPixmap &photoPixmap = carsList[i].second;
@@ -1094,7 +1116,7 @@ void MainWindow::create_widgetCard(QVBoxLayout *layoutWidgetCard, QVector<QPair<
 
 void MainWindow::creationInnerTabs()
 {
-    //refreshData();
+    refreshData();
     ui->Account_name_EditLine->setText(currentUser.name);
     ui->Account_LastName_EditLine->setText(currentUser.surname);
     ui->Account_phone_EditLine->setText(currentUser.phone);
@@ -1129,7 +1151,7 @@ void MainWindow::creationInnerTabs()
     auto checkChangesEmailPassword = [this]() {
         if(ui->Account_email_EditLine->text() != currentUser.email) {
             saveChangesButton_email->setEnabled(true);
-        } else if(ui->Account_currentPassword_EditLine->text() != currentUser.password) {
+        } else if(ui->Account_currentPassword_EditLine->text() != "" && ui->Account_newPassword_EditLine->text() != "") {
             saveChangesButton_changePassword->setEnabled(true);
         }
     };
@@ -1139,11 +1161,16 @@ void MainWindow::creationInnerTabs()
     connect(ui->Account_phone_EditLine, &QLineEdit::textChanged, this, checkChangesInformation);
     connect(ui->Account_email_EditLine, &QLineEdit::textChanged, this, checkChangesEmailPassword);
     connect(ui->Account_currentPassword_EditLine, &QLineEdit::textChanged, this, checkChangesEmailPassword);
+    connect(ui->Account_newPassword_EditLine, &QLineEdit::textChanged, this, checkChangesEmailPassword);
 
     for(QLineEdit *editLine : ui->Account_innerTab->findChildren<QLineEdit*>()) {
         editLine->installEventFilter(this);
     }
 
+    isSuccessful = new QLabel(ui->Account_innerTab);
+    isSuccessful->setObjectName("isSuccessful");
+    isSuccessful->setStyleSheet("font-size: 16px; color: green;");
+    isSuccessful->hide();
 }
 
 void MainWindow::saveChangesButton()
@@ -1151,31 +1178,83 @@ void MainWindow::saveChangesButton()
     QPushButton *button = qobject_cast<QPushButton*>(sender());
     QSqlQuery query;
 
+
+
     if(ui->Account_innerTab->currentIndex() == 0) {
         query.prepare("UPDATE \"Users\" "
                       "SET \"name\" = :name, \"surname\" = :surname, \"phone\" = :phone "
-                      "WHERE \"id_user\" = 1");
+                      "WHERE \"id_user\" = :id_user");
 
         query.bindValue(":name", ui->Account_name_EditLine->text());
         query.bindValue(":surname", ui->Account_LastName_EditLine->text());
         query.bindValue(":phone", ui->Account_phone_EditLine->text());
         query.bindValue(":id_user", currentUser.id_user);
 
-        QLabel *isSuccessful = new QLabel(ui->PersonalInformation_tab);
         if(query.exec()) {
             isSuccessful->setText("Your data was successfully added");
+            isSuccessful->setStyleSheet("font-size: 16px; color: green;");
         } else {
             isSuccessful->setText("Your data wasn't successfully added");
+            isSuccessful->setStyleSheet("font-size: 16px; color: red;");
         }
-        isSuccessful->move(0,200);
+        isSuccessful->move(0,248);
         isSuccessful->show();
         button->setEnabled(false);
 
         refreshData();
     } else if(ui->Account_innerTab->currentIndex() == 1) {
-        qDebug() << "tab 1";
+
+        query.prepare("UPDATE \"Users\" "
+                      "SET \"email\" = :email "
+                      "WHERE \"id_user\" = :id_user");
+
+        query.bindValue(":email", ui->Account_email_EditLine->text());
+        query.bindValue(":id_user", currentUser.id_user);
+
+        if(query.exec()) {
+            isSuccessful->setText("Your data was successfully added");
+            isSuccessful->setStyleSheet("font-size: 16px; color: green;");
+        } else {
+            isSuccessful->setText("Your data wasn't successfully added");
+            isSuccessful->setStyleSheet("font-size: 16px; color: red;");
+        }
+        isSuccessful->move(0,160);
+        isSuccessful->show();
+        button->setEnabled(false);
+
+        refreshData();
     } else if(ui->Account_innerTab->currentIndex() == 2) {
-        qDebug() << "tab 2";
+
+        if(ui->Account_currentPassword_EditLine->text() == currentUser.password
+            && ui->Account_newPassword_EditLine->text() != currentUser.password) {
+
+            query.prepare("UPDATE \"Users\" "
+                          "SET \"password\" = :newPassword "
+                          "WHERE \"id_user\" = :id_user");
+
+            query.bindValue(":newPassword", ui->Account_newPassword_EditLine->text());
+            query.bindValue(":id_user", currentUser.id_user);
+
+            if(query.exec()) {
+                isSuccessful->setText("Your data was successfully added");
+                isSuccessful->setStyleSheet("font-size: 16px; color: green;");
+                ui->Account_currentPassword_EditLine->setText("");
+                ui->Account_newPassword_EditLine->setText("");
+            } else {
+                isSuccessful->setText("Your data wasn't successfully added");
+                isSuccessful->setStyleSheet("font-size: 16px; color: red;");
+            }
+            isSuccessful->move(0,248);
+            isSuccessful->show();
+            button->setEnabled(false);
+
+            refreshData();
+        } else {
+            isSuccessful->setText("Something went worng, change your password");
+            isSuccessful->setStyleSheet("font-size: 16px; color: red;");
+            isSuccessful->move(0,248);
+            isSuccessful->show();
+        }
     }
 }
 
@@ -1195,10 +1274,17 @@ void MainWindow::refreshData()
             currentUser.surname = query.value("surname").toString();
             currentUser.phone = query.value("phone").toString();
             currentUser.password = query.value("password").toString();
-            qDebug() << "Данные пользователя загружены";
         }
     } else {
         qDebug() << "Ошибка запроса: ";
+    }
+}
+
+void MainWindow::changeCurrentTab()
+{
+    QLabel* label = ui->Account_innerTab->findChild<QLabel*>("isSuccessful");
+    if (label) {
+        label->hide();
     }
 }
 

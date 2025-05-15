@@ -74,6 +74,8 @@ private slots:
 
     void refreshData();
 
+    void changeCurrentTab();
+
 private:
     Ui::MainWindow *ui;
 
@@ -105,5 +107,7 @@ private:
     QPushButton *saveChangesButton_personalInformation = nullptr;
     QPushButton *saveChangesButton_email = nullptr;
     QPushButton *saveChangesButton_changePassword = nullptr;
+
+    QLabel *isSuccessful;
 };
 #endif // MAINWINDOW_H

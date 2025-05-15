@@ -1422,8 +1422,8 @@ QCheckBox::indicator:checked {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>22</width>
-                <height>16</height>
+                <width>767</width>
+                <height>872</height>
                </rect>
               </property>
               <property name="styleSheet">
@@ -1554,7 +1554,7 @@ QCheckBox::indicator:checked {
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>570</width>
+                   <width>706</width>
                    <height>1114</height>
                   </rect>
                  </property>
@@ -2679,7 +2679,7 @@ QTabWidget::pane {
 }</string>
              </property>
              <property name="currentIndex">
-              <number>1</number>
+              <number>2</number>
              </property>
              <widget class="QWidget" name="Profile_Booking_Tab">
               <property name="styleSheet">
@@ -2822,8 +2822,8 @@ QTabWidget::pane {
                           <rect>
                            <x>0</x>
                            <y>0</y>
-                           <width>61</width>
-                           <height>36</height>
+                           <width>1062</width>
+                           <height>597</height>
                           </rect>
                          </property>
                          <layout class="QVBoxLayout" name="verticalLayout_18">
@@ -2935,7 +2935,7 @@ QPushButton:disabled {
 }</string>
                  </property>
                  <property name="currentIndex">
-                  <number>0</number>
+                  <number>2</number>
                  </property>
                  <widget class="QWidget" name="PersonalInformation_tab">
                   <attribute name="title">
@@ -3080,7 +3080,7 @@ QPushButton:disabled {
                     </rect>
                    </property>
                   </widget>
-                  <widget class="QLineEdit" name="Account_newPassword_EditLine_2">
+                  <widget class="QLineEdit" name="Account_newPassword_EditLine">
                    <property name="geometry">
                     <rect>
                      <x>0</x>
@@ -3150,6 +3150,284 @@ QPushButton:disabled {
               <attribute name="title">
                <string>Help</string>
               </attribute>
+              <layout class="QVBoxLayout" name="verticalLayout_20">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>71</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QScrollArea" name="scrollArea_5">
+                 <property name="styleSheet">
+                  <string notr="true">QScrollArea {
+	border: none;
+}</string>
+                 </property>
+                 <property name="verticalScrollBarPolicy">
+                  <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOn</enum>
+                 </property>
+                 <property name="widgetResizable">
+                  <bool>true</bool>
+                 </property>
+                 <widget class="QWidget" name="scrollAreaWidgetContents_5">
+                  <property name="geometry">
+                   <rect>
+                    <x>0</x>
+                    <y>-7</y>
+                    <width>1073</width>
+                    <height>1021</height>
+                   </rect>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_21" stretch="0,0">
+                   <property name="spacing">
+                    <number>5</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>35</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>20</number>
+                   </property>
+                   <item>
+                    <widget class="QLineEdit" name="lineEdit">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>74</height>
+                      </size>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>22</pointsize>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">border: none;</string>
+                     </property>
+                     <property name="text">
+                      <string>Auto data management</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QTabWidget" name="CarManagement_TabWidget">
+                     <property name="styleSheet">
+                      <string notr="true">QTabBar::tab:first {
+	margin-left: -9px;    
+}
+QTabWidget::pane {
+    background-color: blue;
+	border-top: none;
+}
+QTabBar::tab {
+    background-color: #212121;
+    color: white;
+    border: none;
+}
+QTabBar {
+    font-size: 18px; 
+    border: none;
+}
+QTabBar::tab:selected {
+    border-bottom: 2px solid orange;
+}
+
+QLineEdit {
+  	height: 43px;
+  	border: 1px solid white;
+ 	border-radius: 9px; 
+	font: 13pt;
+	padding-left: 10px;
+}</string>
+                     </property>
+                     <property name="currentIndex">
+                      <number>0</number>
+                     </property>
+                     <widget class="QWidget" name="AddNewCar_Tab">
+                      <property name="styleSheet">
+                       <string notr="true">QLabel {
+	font-size: 12pt;
+    max-width: 300px;
+	max-height: 30px;
+}
+QLineEdit {
+    max-width: 350px;
+	margin-bottom: 15px;
+}</string>
+                      </property>
+                      <attribute name="title">
+                       <string>Add new car</string>
+                      </attribute>
+                      <layout class="QVBoxLayout" name="verticalLayout_22">
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>30</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>15</number>
+                       </property>
+                       <item>
+                        <layout class="QFormLayout" name="formLayout_2">
+                         <property name="horizontalSpacing">
+                          <number>40</number>
+                         </property>
+                         <property name="verticalSpacing">
+                          <number>5</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>0</number>
+                         </property>
+                         <item row="0" column="0">
+                          <widget class="QLabel" name="label_2">
+                           <property name="text">
+                            <string>Model</string>
+                           </property>
+                           <property name="alignment">
+                            <set>Qt::AlignmentFlag::AlignBottom</set>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="0" column="1">
+                          <widget class="QLabel" name="label_3">
+                           <property name="text">
+                            <string>Vehicle type</string>
+                           </property>
+                           <property name="alignment">
+                            <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="0">
+                          <widget class="QLineEdit" name="lineEdit_2">
+                           <property name="minimumSize">
+                            <size>
+                             <width>270</width>
+                             <height>0</height>
+                            </size>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="1">
+                          <widget class="QLineEdit" name="lineEdit_3"/>
+                         </item>
+                         <item row="2" column="0">
+                          <widget class="QLabel" name="label_4">
+                           <property name="text">
+                            <string>Fuel type</string>
+                           </property>
+                           <property name="alignment">
+                            <set>Qt::AlignmentFlag::AlignBottom</set>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="1">
+                          <widget class="QLabel" name="label_5">
+                           <property name="text">
+                            <string>Transmission</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="0">
+                          <widget class="QLineEdit" name="lineEdit_4">
+                           <property name="minimumSize">
+                            <size>
+                             <width>270</width>
+                             <height>0</height>
+                            </size>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="1">
+                          <widget class="QLineEdit" name="lineEdit_5"/>
+                         </item>
+                         <item row="4" column="0">
+                          <widget class="QLabel" name="label_6">
+                           <property name="text">
+                            <string>Price per day</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="4" column="1">
+                          <widget class="QLabel" name="label_7">
+                           <property name="text">
+                            <string>Number of passengers</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="5" column="0">
+                          <widget class="QLineEdit" name="lineEdit_6">
+                           <property name="minimumSize">
+                            <size>
+                             <width>270</width>
+                             <height>0</height>
+                            </size>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="5" column="1">
+                          <widget class="QLineEdit" name="lineEdit_7"/>
+                         </item>
+                         <item row="7" column="0" colspan="2">
+                          <widget class="QLineEdit" name="lineEdit_8"/>
+                         </item>
+                         <item row="6" column="0" colspan="2">
+                          <widget class="QLabel" name="label_8">
+                           <property name="text">
+                            <string>Specifications</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="pushButton">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>400</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>PushButton</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                     <widget class="QWidget" name="DeleteCar_Tab">
+                      <attribute name="title">
+                       <string>Delete car</string>
+                      </attribute>
+                     </widget>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </widget>
            </item>
